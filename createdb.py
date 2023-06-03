@@ -15,5 +15,16 @@ def createDB(db):
         if connection:
             connection.close()
 
+# Enter data into the DB to test
+def init_data():
+
+
+# TODO - Function to handle manual
+# data entry into the db
+def enterData():
+
+
 if __name__ == '__main__':
-    createDB("Database_EDF.db")
+    # Uncomment to create a new
+    # empty database.
+    # createDB("Database_EDF.db")
