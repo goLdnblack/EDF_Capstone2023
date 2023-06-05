@@ -7,7 +7,7 @@ from datetime import datetime
 # .info         - things working as expected
 # .warning      - something unexpected happened
 # .error        - software unable to perform a function
-# .critical     - software really in problem now
+# .critical     - software really in trouble now
 
 def getTime():
     timestamp = datetime.now()
