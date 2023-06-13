@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <script src="js/main.js"></script>
+  <script src="js/daySetting.js"></script>
+</head>
+<body>
+<h2>REQUEST FOR EMPLOYEE DEVELOPMENT FUNDS - ADMIN APPROVAL</h2>
+<div class="form-container">
+  <form>
+
+
+      <label for="supervisorApproval"><b>SUPERVISOR APPROVAL NAME:</b></label><br>
+    <div class="input-container">
+      <input type="text" id="supervisorApproval" name="supervisorApproval" required>
+    </div>
+        <p>Acknowledge that this development opportunity is approved for the following reasons: (include how the course work or conference will improve the applicant’s effectiveness and any other reasons for approval.
+        <b>(This section is required.)</b></p>
+    <div class="input-container2">
+      <input type="text" id="supervisorApprovalDescription" name="supervisorApprovalDescription" required><br> </div>
+      <p>I also acknowledge that should there be insufficient funds available in the employee’s EDF balance, my department budget may be billed for the balance due.</p>
+
+<div class="label-container">
+  <label for="supervisorSignature">Supervisor Signature <b>(Type your First and Last Name)</b>:</label>
+  <input type="text" id="supervisorSignature" name="supervisorSignature" required>
+</div>
+
+<div class="label-container">
+  <label id="todayDateLabel">Today's Date:</label>
+</div><br>
+    <ul>
+      <li>This form must be completed and submitted within the fiscal year in which the course/
+      conference/workshop began.</li><br>
+      <li>To expedite processing and avoid delays email to: employeedevelopment@valenciacollege.edu; alternatively, you can interoffice hard copies to Employee Development, Mail Code 4-36.</li><br>
+      <li>For assistance or to check your employee development balance email:<a href="http://employeedevelopment@valenciacollege.edu">employeedevelopment@valenciacollege.edu</a></li><br>
+      <li>Employees may be required to submit documentation of successful completion of the development experience or class.</li><br>
+      <li>Employees should maintain records/institution transcripts, of course, completion for a minimum of two years from the start date of the course.</li><br>
+      <li>If you would like to keep a record of this development opportunity, you may add it to your Valencia EDGE transcript. Log into the EDGE and click on the “My Learning” channel. Click “Your Transcript.” Then click “options” and select “Add External Training.” Complete the information about your development experience and click submit. Once your course or conference is complete, you can go back and click the “Mark Complete” button on your transcript.</li><br>
+    </ul>
+
+
+    <label for="eligibilityVerification"><b>ELIGIBILITY VERIFICATION – ODHR USE ONLY</b></label><br>
+
+    <div class="label-container">
+    <input type="radio" id="eligibilityOptionA" name="eligibilityVerificationOption" value="Funds available" required>
+    <label for="eligibilityOptionA">Funds available</label><br>
+    </div>
+    <div class="label-container">
+    <input type="radio" id="eligibilityOptionB" name="eligibilityVerificationOption" value="Funds not available" required>
+    <label for="eligibilityOptionB">Funds not available</label><br>
+    </div>
+    <p><b>If employee or development opportunity not eligible, select reason:</b></p>
+
+    <input type="radio" id="eligibilityReasonOptionA" name="eligibilityVerificationOption" value="Ineligible expense" required>
+    <label for="eligibilityOptionA">Ineligible expense</label><br>
+
+    <input type="radio" id="eligibilityReasonOptionB" name="eligibilityVerificationOption" value="Unaccredited institution" required>
+    <label for="eligibilityOptionA">Unaccredited institution</label><br>
+
+    <input type="radio" id="eligibilityReasonOptionC" name="eligibilityVerificationOption" value="Insufficient EDF Funds" required>
+    <label for="eligibilityOptionA">Insufficient EDF Funds</label><br>
+
+    <input type="radio" id="eligibilityReasonOptionD" name="eligibilityVerificationOption" value="Funds available" Other>
+    <label for="eligibilityOptionA">Other</label><br>
+
+    <p><b>Comment</b></p>
+    <div class="input-container2">
+      <input type="text" id="eligibilityReasonComment" name="Comment" required><br> </div>
+
+    <div class="label-container">
+      <label for="odhrSignature">ODHR Signature <b>(Type your First and Last Name)</b>:</label>
+      <input type="text" id="odhrSignature" name="odhrSignature" required>
+    </div>
+
+    <div class="label-container">
+      <label id="todayDateLabel2">Today's Date:</label>
+    </div><br>
+
+    <div class="button-container">
+      <input type="submit" value="Submit Admin Form">
+    </div>
+
+  </form>
+</div>
+
+
+</body>
+</html>
