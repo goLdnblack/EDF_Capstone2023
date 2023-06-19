@@ -1,0 +1,149 @@
+
+body {
+  font-family: sans-serif;
+}
+
+h2 {
+  text-align: center;
+}
+
+.form-container {
+
+  width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.label-container {
+  display: inline-block;
+  margin-right: 20px;
+  margin-bottom: 10px;
+}
+
+.form-container input[type="text"],
+.form-container input[type="date"],
+.form-container input[type="number"]
+
+ {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.form-container input[type="submit"] {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 100%;
+}
+
+
+.highlight {
+  background-color: #cce6ff;
+}
+
+input:focus {
+  outline-color: palevioletred;
+}
+
+.radio-container {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.radio-container label {
+  margin-left: 5px;
+}
+
+
+.radio-container input[type="radio"] {
+  margin-left: 10px;
+}
+
+#degreeOptions {
+  display: none;
+}
+
+#degreeOptions label {
+  margin-right: 10px; /* Add right margin for spacing */
+}
+
+
+
+.button button {
+
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 100%;
+
+}
+
+#signatureCanvas {
+  border: 1px solid #000;
+  margin-bottom: 10px;
+}
+
+#clearButton {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#clearButton:hover {
+  background-color: #45a049;
+}
+
+.red-button {
+
+  display: flex;
+  margin-top: 20px;
+  background-color: red;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 5%;
+}
+
+.yellow-button{
+
+  margin-top: 20px;
+  background-color: darkorange;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 5%;
+  align-content: flex-end;
+
+}
+
+.input-container {
+  width: 300px; /* Set the desired width */
+}
+
+.input-container2 input[type="text"]{
+  height: 100px;
+  line-height: 1;
+}
+
