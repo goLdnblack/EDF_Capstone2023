@@ -16,14 +16,18 @@
   <link rel="apple-touch-icon" href="icon.png">
   <!-- Place favicon.ico in the root directory -->
 
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/main.css">
+  <!--<link rel="stylesheet" href="css/normalize.css"> -->
+  <link href="{{ url_for('static',filename='styles/css/normalize.css') }}" rel="stylesheet">
+  <!--<link rel="stylesheet" href="css/main.css"> -->
+  <link href="{{ url_for('static',filename='styles/css/main.css') }}" rel="stylesheet">
 
   <meta name="theme-color" content="#fafafa">
   <!-- CSS -->
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <!-- <link rel="stylesheet" type="text/css" href="css/style.css">-->
+  <link href="{{ url_for('static',filename='styles/css/style.css') }}" rel="stylesheet">
   <!-- JS -->
-  <script src="js/main.js"></script>
+  <!--<script src="js/main.js"></script>-->
+  <script src="{{url_for('static', filename='js/main.js')}}"></script>
 </head>
 
 <body>
