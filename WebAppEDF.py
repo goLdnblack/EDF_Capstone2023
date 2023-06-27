@@ -59,7 +59,9 @@ def verifyUser():
 # TODO - HTML section below
 ###########################
 
-# User sign in page
+# TODO - Set log in page as initial page
+
+# Main page after signing in
 @app.route("/", methods=["POST", "GET"])
 def homePage():
 

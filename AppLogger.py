@@ -14,9 +14,6 @@ from logging.handlers import RotatingFileHandler
 formatter = logging.Formatter('%(asctime)s - %(name)s Function: %(funcName)s | %(levelname)s | %(message)s', 
                               datefmt='%Y-%m-%d %H:%M:%S')
 
-# Global location for log file
-_logfile: any
-
 def getTime():
     timestamp = datetime.now()
     timestamp = timestamp.strftime("%m-%d-%Y %H:%M:%S")
@@ -50,7 +47,6 @@ def setupLogger(name, log_dir, level=logging.DEBUG):
     logger.setLevel(level)
     logger.addHandler(handler)
     logger.info('Logger initialized.')
-    _logfile = log_dir
     return logger
 
 # TODO - create functions to log SQL queries
