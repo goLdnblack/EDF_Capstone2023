@@ -2,14 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <link rel="stylesheet" href="css/normalize.css">
+  <!--<link rel="stylesheet" type="text/css" href="style.css">-->
+  <link href="{{ url_for('static',filename='styles/css/main.css') }}" rel="stylesheet">
+
+  <!--<link rel="stylesheet" href="css/normalize.css">-->
+  <link href="{{ url_for('static',filename='styles/css/normalize.css') }}" rel="stylesheet">
 
 </head>
 
 <body>
 <div>
-  <a href="index.html" class="red-button">Return</a>
+  <a href="/" class="red-button">Return</a>
 </div>
 <h1>QUICK REFERENCE INFORMATION FOR EMPLOYEE DEVELOPMENT FUNDS</h1>
 <ul>
@@ -52,7 +55,7 @@
 
 <h3 class="step-title">STEP 5: DIRECT SUPERVISOR PRINTED NAME, LIST REASONS FOR APPROVAL, SIGN AND DATE FORM</h3>
 <ul>
-  <li>Supervisor must list how coursework or conference will improve the employeeâ€™s effectiveness and any other reason for approval. This section is required.</li>
+  <li>Supervisor must list how coursework or conference will improve the employee's effectiveness and any other reason for approval. This section is required.</li>
 </ul>
 
 <h3 class="step-title">STEP 7: SEND THE COMPLETED FORM AND ALL SUPPORTING DOCUMENTS TO YOUR EMPLOYEE DEVELOPMENT.</h3>

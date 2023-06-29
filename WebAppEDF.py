@@ -69,9 +69,16 @@ def verifyUser():
 # Main page after signing in
 @app.route("/", methods=["POST", "GET"])
 def homePage():
+    logger.info(f'User logged in.')
 
     # TODO - call verify user function 
     return render_template("index.html")
+
+@app.route("/Instructions", methods=["POST", "GET"])
+def instructPage():
+    logger.info(f'Switched to instruct page')
+    
+    return render_template("Instructions.html")
 
 ###########################
 
