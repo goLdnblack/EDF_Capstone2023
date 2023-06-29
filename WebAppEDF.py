@@ -1,6 +1,8 @@
 # SQL code
 import sqlite3
 
+import os,sys
+
 # Handle HTML swithing
 from flask import Flask, flash
 from flask import url_for
@@ -19,6 +21,9 @@ import AppLogger
 # log_error(msg)
 # log_critical(msg)
 
+
+# Executable
+base_dir = '.'
 
 # Initialize app and connect to database
 app = Flask(__name__)
@@ -74,6 +79,9 @@ if __name__ == "__main__":
     # Initialize logging
     # init()
     print('Program start')
+
+    if hasattr(sys, '_MEIPASS'):
+        base_dir = os.path.join(sys._MEIPASS)
 
     # Initialize HTML page
     app.secret_key = '2023edf'
