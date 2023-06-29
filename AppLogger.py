@@ -21,7 +21,7 @@ def getTime():
 
 def getTimeFileName():
     timestamp = datetime.now()
-    timestamp = timestamp.strftime("%m-%d-%Y_%H-%M")
+    timestamp = timestamp.strftime("%m-%d-%Y")
     return timestamp
 
 # Logger class
