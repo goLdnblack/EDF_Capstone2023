@@ -8,9 +8,13 @@ from flask import Flask, flash
 from flask import url_for
 from flask import render_template, request, redirect
 
+import datetime
+
 # Log application
 #from AppLogger import *
 import AppLogger
+
+import logging
 # AppLogger functions: (increasing severity)
 
 # msg is string containing description
@@ -25,15 +29,23 @@ import AppLogger
 # Executable
 base_dir = '.'
 
-# Initialize app and connect to database
-app = Flask(__name__)
-database = sqlite3.connect("Database_EDF.db", check_same_thread=False)
-sql = database.cursor()
 
 # Logger
 logDir = (AppLogger.os.getcwd() + '\\log')
 logger = AppLogger.logging.setLoggerClass(AppLogger.LogApp)
 logger = AppLogger.setupLogger('edf_logger', logDir)
+
+logging.basicConfig(filename=logDir + "\\log\\flask_app_logger_" + 
+                    (datetime.datetime.now().strftime("%m-%d-%Y")) + ".txt",
+                     level=logging.INFO,
+                    format='%(asctime)s - %(name)s Function: %(funcName)s | %(levelname)s | %(message)s', 
+                              datefmt='%Y-%m-%d %H:%M:%S')
+
+# Initialize app and connect to database
+app = Flask(__name__)
+database = sqlite3.connect("Database_EDF.db", check_same_thread=False)
+sql = database.cursor()
+
 
 # TODO - When user signs in with their VID, auto fill form
 # document sections based on their information from the
@@ -74,11 +86,17 @@ def homePage():
     # TODO - call verify user function 
     return render_template("index.html")
 
+# Information page on how to navigate site
 @app.route("/Instructions", methods=["POST", "GET"])
 def instructPage():
     logger.info(f'Switched to instruct page')
     
     return render_template("Instructions.html")
+
+@app.route("/Form_Continued", methods=["POST", "GET"])
+def formPartTwo():
+
+    return render_template("Form2Page.html")
 
 ###########################
 
@@ -94,5 +112,5 @@ if __name__ == "__main__":
     app.secret_key = '2023edf'
     app.config['SESSION_TYPE'] = 'filesystem'
     # app.run(host="0.0.0.0", port=5000, debug=True)
-    app.run()
+    app.run(debug=True)
     database.close()

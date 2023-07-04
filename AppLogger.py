@@ -41,10 +41,8 @@ class LogApp(logging.Logger):
 def setupLogger(name, log_dir, level=logging.DEBUG):
     
     # Try to create directory
-    try:
+    if (not os.path.exists(log_dir)):
         os.mkdir(log_dir)
-    except Exception as e:
-        print(f'Directory may alraedy exist: {e}')
 
     handler = RotatingFileHandler(log_dir + '\\' + name + '_' + getTimeFileName() + '.log', 
                                   maxBytes=50*1000, backupCount=10)
