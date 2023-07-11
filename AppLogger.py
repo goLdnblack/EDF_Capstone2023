@@ -48,9 +48,13 @@ def setupLogger(name, log_dir, level=logging.DEBUG):
                                   maxBytes=50*1000, backupCount=10)
     handler.setFormatter(formatter)
 
+    consoleOutput = logging.StreamHandler()
+    consoleOutput.setFormatter(formatter)
+
     logger = logging.getLogger(name)
     logger.setLevel(level)
     logger.addHandler(handler)
+    logger.addHandler(consoleOutput)
     logger.info('Logger initialized.')
     return logger
 
