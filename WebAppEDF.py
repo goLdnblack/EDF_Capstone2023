@@ -11,10 +11,8 @@ from flask import render_template, request, redirect
 import datetime
 
 # Log application
-#from AppLogger import *
 import AppLogger
 
-import logging
 # AppLogger functions: (increasing severity)
 
 # msg is string containing description
@@ -34,12 +32,6 @@ base_dir = '.'
 logDir = (AppLogger.os.getcwd() + '\\log')
 logger = AppLogger.logging.setLoggerClass(AppLogger.LogApp)
 logger = AppLogger.setupLogger('edf_logger', logDir)
-
-logging.basicConfig(filename=logDir + "\\log\\flask_app_logger_" + 
-                    (datetime.datetime.now().strftime("%m-%d-%Y")) + ".txt",
-                     level=logging.INFO,
-                    format='%(asctime)s - %(name)s Function: %(funcName)s | %(levelname)s | %(message)s', 
-                              datefmt='%Y-%m-%d %H:%M:%S')
 
 # Initialize app and connect to database
 app = Flask(__name__)
@@ -76,6 +68,8 @@ def verifyUser():
 # TODO - HTML section below
 ###########################
 
+
+
 # TODO - Set log in page as initial page
 
 # Main page after signing in
@@ -92,6 +86,7 @@ def instructPage():
     logger.info(f'Switched to instruct page')
     
     return render_template("Instructions.html")
+
 
 @app.route("/Form_Continued", methods=["POST", "GET"])
 def formPartTwo():

@@ -6,10 +6,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <link rel="stylesheet" href="css/normalize.css">
-  <script src="js/main.js"></script>
-  <script src="js/daySetting.js"></script>
+  <!--<link rel="stylesheet" type="text/css" href="style.css">-->
+  <link href="{{ url_for('static',filename='styles/css/style.css') }}" rel="stylesheet">
+  <!--<link rel="stylesheet" href="css/normalize.css">-->
+  <link href="{{ url_for('static',filename='styles/css/normalize.css') }}" rel="stylesheet">
+  <!--<script src="js/main.js"></script>-->
+  <script src="{{url_for('static', filename='js/main.js')}}"></script>
+  <!--<script src="js/daySetting.js"></script>-->
+  <script src="{{url_for('static', filename='js/daySetting.js')}}"></script>
 
 </head>
 <body>
@@ -19,7 +23,8 @@
 
 
   <div>
-    <a href="index.html" class="red-button">Return</a>
+    <a href="/" class="red-button">Return</a>
+    <!-- index.html -->
   </div>
 
 
