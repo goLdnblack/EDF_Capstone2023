@@ -71,13 +71,22 @@ def verifyUser():
 
 
 # TODO - Set log in page as initial page
+@app.route("/", methods=["POST", "GET"])
+def login():
+    logger.info(f'User attempting to log in')
+
+    
+    if request.method == "POST":
+        # Verify user credentials match database information
+        return redirect(url_for("homePage"))
+
+    return render_template("Login.html")
 
 # Main page after signing in
-@app.route("/", methods=["POST", "GET"])
+@app.route("/Form_Index", methods=["POST", "GET"])
 def homePage():
-    logger.info(f'User logged in.')
+    logger.info(f'Loaded blank EDF form')
 
-    # TODO - call verify user function 
     return render_template("index.html")
 
 # Information page on how to navigate site

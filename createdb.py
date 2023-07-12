@@ -1,7 +1,14 @@
 import sqlite3
 from sqlite3 import Error
 
+import AppLogger
+
 # Initialize the database for the first time before use
+
+# Logger
+logDir = (AppLogger.os.getcwd() + '\\log')
+logger = AppLogger.logging.setLoggerClass(AppLogger.LogApp)
+logger = AppLogger.setupLogger('sql-database', logDir)
 
 # TODO - Use seed file to generate a new database
 
@@ -10,9 +17,9 @@ def createDB(db):
     try:
         connection = sqlite3.connect(db)
         # TODO - Create a log of the db being created
-        print(sqlite3.version)
+        logger.info(sqlite3.version)
     except Error as e:
-        print(e)
+        logger.critical(e)
     finally:
         if connection:
             connection.close()
