@@ -48,6 +48,7 @@ def setupLogger(name, log_dir, level=logging.DEBUG):
                                   maxBytes=50*1000, backupCount=10)
     handler.setFormatter(formatter)
 
+    # Handler to display log messages to console
     consoleOutput = logging.StreamHandler()
     consoleOutput.setFormatter(formatter)
 
@@ -57,5 +58,3 @@ def setupLogger(name, log_dir, level=logging.DEBUG):
     logger.addHandler(consoleOutput)
     logger.info('Logger initialized.')
     return logger
-
-# TODO - create functions to log SQL queries

@@ -82,7 +82,16 @@ def login():
 
     return render_template("Login.html")
 
-# Main page after signing in
+# TODO - Instead of going straight to the EDF page
+# the first page could show a list of current EDF's
+# in the database that are assigned to the specific
+# user. The user could select to edit an already
+# opened EDF, an admin could select an EDF
+# that is waiting for their approval or create
+# a brand new EDF which would go to the createEDF
+# page.
+
+# First page to enter information into EDF
 @app.route("/Form_Index", methods=["POST", "GET"])
 def homePage():
     logger.info(f'Loaded blank EDF form')
@@ -96,7 +105,7 @@ def instructPage():
     
     return render_template("Instructions.html")
 
-
+# More information required to complete an EDF form
 @app.route("/Form_Continued", methods=["POST", "GET"])
 def formPartTwo():
 

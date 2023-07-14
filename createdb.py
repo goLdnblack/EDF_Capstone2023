@@ -5,6 +5,8 @@ import AppLogger
 
 # Initialize the database for the first time before use
 
+# TODO - Look up myphp admin to set up a database
+
 # Logger
 logDir = (AppLogger.os.getcwd() + '\\log')
 logger = AppLogger.logging.setLoggerClass(AppLogger.LogApp)
@@ -24,8 +26,17 @@ def createDB(db):
         if connection:
             connection.close()
 
+# TODO - encrypt user passwords entered into
+# user database
+
 # Enter data into the DB to test
 def init_data():
+    db = sqlite3.connect("Database_EDF.db", check_same_thread=False)
+    sql = db.cursor()
+
+    sql.execute('''
+                CREATE TABLE IF NOT EXISTS edf
+                ''')
     return
 
 # TODO - Function to handle manual
