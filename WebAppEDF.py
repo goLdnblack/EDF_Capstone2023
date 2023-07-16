@@ -13,6 +13,9 @@ import datetime
 # Log application
 import AppLogger
 
+# Hash user passwords
+from HashGenerator import HashGenerator
+
 # AppLogger functions: (increasing severity)
 
 # msg is string containing description
@@ -33,10 +36,17 @@ logDir = (AppLogger.os.getcwd() + '\\log')
 logger = AppLogger.logging.setLoggerClass(AppLogger.LogApp)
 logger = AppLogger.setupLogger('edf_logger', logDir)
 
+# Password Hash generator
+hw = HashGenerator()
+
 # Initialize app and connect to database
 app = Flask(__name__)
 database = sqlite3.connect("Database_EDF.db", check_same_thread=False)
-sql = database.cursor()
+
+
+def connectDB():
+    sql = database.cursor()
+    return sql
 
 # TODO - hash value generator for password encryption
 def generateHashVal():
@@ -70,8 +80,28 @@ def updateEDF():
     return
 
 # TODO - Verify login credentials are correct
-def verifyUser():
-    return
+def verifyUser(username, password):
+    sql = connectDB()
+    sql.execute('''
+                SELECT vid, password, salt FROM USERS
+                WHERE vid=?
+                ''', (username,))
+    #sql.execute('''SELECT * FROM USERS''')
+    result = sql.fetchall()
+
+    if (len(result) == 0):
+        logger.info(f'No user found.')
+        return False
+    
+    # Generate the same hash value based on the user's
+    # salt value and password entered
+    hashPassValue = hw.generatePasswordSalt(password, result[0][2])
+
+    if (hashPassValue == result[0][1]):
+        logger.info(f'User {str(username)} verified')
+        return True
+    
+    return False
 
 # TODO - HTML section below
 ###########################
@@ -86,7 +116,15 @@ def login():
     
     if request.method == "POST":
         # Verify user credentials match database information
-        return redirect(url_for("homePage"))
+        username = request.form["vidlogin"]
+        password = request.form["password"]
+
+        if(verifyUser(username, password)):
+            return redirect(url_for("homePage"))
+        else:
+            return redirect(url_for("login"))
+        
+        
 
     return render_template("Login.html")
 
