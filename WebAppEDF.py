@@ -38,32 +38,40 @@ app = Flask(__name__)
 database = sqlite3.connect("Database_EDF.db", check_same_thread=False)
 sql = database.cursor()
 
+# TODO - hash value generator for password encryption
+def generateHashVal():
+    return
+
+# TODO - salt is a cryptography term for a random value that's
+# associated to a password to further increase its encryption
+def generateSalt():
+    return
 
 # TODO - When user signs in with their VID, auto fill form
 # document sections based on their information from the
 # database
 def autoComplete():
-    return 0
+    return
 
 # TODO - When clicking on confirm to make changes to database
 # call this function to verify and quality check the information
 # entered
 def qualityCheck():
-    return 0
+    return
 
 # TODO - When someone else is looking for an existing EDF
 # to approve, this method searches for it. Could find either
 # by EDF ID or professor
 def getEDF():
-    return 0
+    return
 
 # TODO - Update current EDF
 def updateEDF():
-    return 0
+    return
 
 # TODO - Verify login credentials are correct
 def verifyUser():
-    return 0
+    return
 
 # TODO - HTML section below
 ###########################

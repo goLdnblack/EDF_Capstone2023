@@ -35,8 +35,27 @@ def init_data():
     sql = db.cursor()
 
     sql.execute('''
-                CREATE TABLE IF NOT EXISTS edf
+                CREATE SCHEMA IF NOT EXISTS VDB
                 ''')
+    sql.execute('''
+                CREATE TABLE IF NOT EXISTS VDB.USERS (
+                vid text NOT NULL, name text, password text, salt text
+                )
+                ''')
+    # TODO - store signatures as BLOB or different data type instead of text.
+    sql.execute('''
+                CREATE TABLE IF NOT EXISTS VDB.EDF (
+                name text, vid text, department text, position text, edf_start date, budget_index text,
+                account_id text, course_name text, course_number text, credit_hours int,
+                degree_title text, college text, course_start date, course_end date, degree_program text,
+                out_of_pocket varchar(1), workshop_title text, host text, location text,
+                workshop_start date, workshop_end date, registration_cost text,
+                registration_pay_method text, purpose text, benefit_college text,
+                employee_signature text, admin_signature text
+                )
+                ''')
+    
+    sql.execute()
     return
 
 # TODO - Function to handle manual
