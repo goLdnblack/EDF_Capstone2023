@@ -33,7 +33,7 @@
 <body>
 <h2>REQUEST FOR EMPLOYEE DEVELOPMENT FUNDS - PART 1</h2>
 <div class="form-container">
-  <form action="index.html" method="post">
+  <form action="#" method="post">
     <div class="label-container">
     <p><b>This form should be completed for EDF requests for conferences, workshops, and classes not taken at Valencia College. Instructions Below </b></p></div>
     <div class="label-container">
@@ -43,12 +43,12 @@
 
     <div class="label-container">
     <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required>
+    <input type="text" id="name" name="name" value="{{data[0]}}" required>
     </div>
 
     <div class="label-container">
     <label for="employeeVID">Employee VID:</label>
-    <input type="text" id="employeeVID" name="employeeVID" required><br>
+    <input type="text" id="employeeVID" name="employeeVID" value="{{data[1]}}" required><br>
     </div>
 
     <div class="label-container">
@@ -133,8 +133,12 @@
     <p>If you selected <b>“Valencia pays institution directly,”</b> submit a check request form along with this application. Payee will be your institution. Include printout of your tuition invoice and class schedule. If you selected <b>“Valencia reimburses employee for out-of-pocket cost,”</b> please submit a
       check request form with this application. Payee will be yourself. Include your paid receipt and class schedule. </p>
 
-    <div class="button">
+    <!--<div class="button">
     <button onclick="nextPage()">Next Page</button>
+    </div>-->
+
+    <div class="button-container">
+      <input type="submit" value="Next Page">
     </div>
 
   </form>

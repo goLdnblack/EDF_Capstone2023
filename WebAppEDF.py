@@ -57,12 +57,22 @@ def edfIDGenerator():
 # TODO - When user signs in with their VID, auto fill form
 # document sections based on their information from the
 # database
-def autoComplete():
-    return
+def autoComplete(vid):
+    sql = connectDB()
+    sql.execute('''
+                SELECT vid, name FROM USERS
+                WHERE vid=?
+                ''', (vid,))
+    result = sql.fetchall()
+    return result
 
 # TODO - When clicking on confirm to make changes to database
 # call this function to verify and quality check the information
 # entered
+
+
+# TODO - check date forms, they are not currently
+# checking if the end date is after the start
 def qualityCheck():
     return
 
@@ -76,7 +86,7 @@ def getEDF():
 def updateEDF():
     return
 
-# TODO - Verify login credentials are correct
+# TODO - remove auto filled forms in login page
 def verifyUser(username, password):
     sql = connectDB()
     sql.execute('''
@@ -121,7 +131,7 @@ def login():
         if(len(verifiedUser) != 0):
             # Save username for session
             session['user'] = verifiedUser
-            return redirect(url_for("homePage"))
+            return redirect(url_for("formPartOne"))
         else:
             return redirect(url_for("login"))
         
@@ -137,11 +147,34 @@ def login():
 # page.
 
 # First page to enter information into EDF
+
+# TODO - instead of calling autoComplete everytime
+# the formPartOne page loads, call it at the login
+# once to fill the session[] array with all the 
+# user values to avoid multiple SQL calls
+
+# TODO - check date forms, they are not currently
+# checking if the end date is after the start
 @app.route("/Form_Index", methods=["POST", "GET"])
-def homePage():
+def formPartOne():
     logger.info(f'Loaded blank EDF form')
 
-    return render_template("index.html")
+    result = autoComplete(session['user'])
+
+    if request.method == "POST":
+        # Quality check the data in the forms
+        # before entering into database
+        edf_data = [None] * 29
+        edf_data[0] = result[0][1]
+        edf_data[1] = result[0][0]
+        edf_data[2] = request.form["department"]
+
+        return redirect(url_for("formPartTwo"))
+
+    # Data array is used to display information
+    # from python program to HTML page.
+    return render_template("index.html", 
+                           data=[result[0][1], result[0][0]])
 
 # Information page on how to navigate site
 @app.route("/Instructions", methods=["POST", "GET"])

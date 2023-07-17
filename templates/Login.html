@@ -2,12 +2,25 @@
 
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
+        <meta charset="utf-8">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+      
+        <meta property="og:title" content="">
+        <meta property="og:type" content="">
+        <meta property="og:url" content="">
+        <meta property="og:image" content="">
+      
+        <link rel="manifest" href="site.webmanifest">
+        <link rel="apple-touch-icon" href="icon.png">
+        <!-- Place favicon.ico in the root directory -->
+      
         <!--<link rel="stylesheet" href="css/normalize.css"> -->
         <link href="{{ url_for('static',filename='styles/css/normalize.css') }}" rel="stylesheet">
         <!--<link rel="stylesheet" href="css/main.css"> -->
         <link href="{{ url_for('static',filename='styles/css/main.css') }}" rel="stylesheet">
-
+      
         <meta name="theme-color" content="#fafafa">
         <!-- CSS -->
         <!-- <link rel="stylesheet" type="text/css" href="css/style.css">-->
@@ -29,16 +42,16 @@
                 Valencia VID:
             </p>
             
-            <input type="text" name="vidlogin" placeholder="VID" required/>
+            <input type="text" name="vidlogin" placeholder="VID" value="V1000" required/>
 
             <p>
                 Password:
             </p>
-            <input type="password" name="password" placeholder="Password" required/>
-
-            <p>
-                <input type="submit" value="Login"/>
-            </p>
+            <input type="password" name="password" placeholder="Password" value="testpass" required/>
+            <br>
+            <div class="button-container">
+                <input type="submit" value="Log In">
+            </div>
             </div>
         </form>
     </body>
