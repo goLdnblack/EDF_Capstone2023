@@ -77,7 +77,9 @@ def init_data():
                 purpose text,
                 benefit_college text,
                 employee_signature text,
-                admin_signature text
+                admin_signature text,
+                edf_submitted varchar(1),
+                edf_id text NOT NULL
                 )
                 ''')
     logger.info(f'Created table EDF')
@@ -97,13 +99,18 @@ def enterData():
     sql = db.cursor()
 
     # password is testpass
+    #sql.execute('''
+    #            INSERT INTO USERS VALUES (
+    #            'V1000',
+    #            'John Doe',
+    #            'c5e4de6117d55b498ff0cc7a0db1f4570e289e7701440e4e893b09bfd6b5c18b',
+    #            '48055c7ac5684edd'
+    #            )
+    #            ''')
+
     sql.execute('''
-                INSERT INTO USERS VALUES (
-                'V1000',
-                'John Doe',
-                'c5e4de6117d55b498ff0cc7a0db1f4570e289e7701440e4e893b09bfd6b5c18b',
-                '48055c7ac5684edd'
-                )
+                ALTER TABLE EDF
+                ADD edf_id text
                 ''')
     db.commit()
     return

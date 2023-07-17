@@ -1,11 +1,11 @@
 # SQL code
 import sqlite3
 
-import os,sys
+import os,sys, random
 
 # Handle HTML swithing
 from flask import Flask, flash
-from flask import url_for
+from flask import url_for, session
 from flask import render_template, request, redirect
 
 import datetime
@@ -48,14 +48,11 @@ def connectDB():
     sql = database.cursor()
     return sql
 
-# TODO - hash value generator for password encryption
-def generateHashVal():
-    return
+# Generate a new unique ID for current EDF
+def edfIDGenerator():
+    edf_id = "%010d" % random.randint(0,9999999999)
+    return edf_id
 
-# TODO - salt is a cryptography term for a random value that's
-# associated to a password to further increase its encryption
-def generateSalt():
-    return
 
 # TODO - When user signs in with their VID, auto fill form
 # document sections based on their information from the
@@ -91,7 +88,7 @@ def verifyUser(username, password):
 
     if (len(result) == 0):
         logger.info(f'No user found.')
-        return False
+        return ""
     
     # Generate the same hash value based on the user's
     # salt value and password entered
@@ -99,9 +96,9 @@ def verifyUser(username, password):
 
     if (hashPassValue == result[0][1]):
         logger.info(f'User {str(username)} verified')
-        return True
+        return result[0][0]
     
-    return False
+    return ""
 
 # TODO - HTML section below
 ###########################
@@ -111,21 +108,23 @@ def verifyUser(username, password):
 # TODO - Set log in page as initial page
 @app.route("/", methods=["POST", "GET"])
 def login():
-    logger.info(f'User attempting to log in')
 
+    logger.info(f'User attempting to log in')
     
     if request.method == "POST":
         # Verify user credentials match database information
-        username = request.form["vidlogin"]
+        user = request.form["vidlogin"]
         password = request.form["password"]
 
-        if(verifyUser(username, password)):
+        verifiedUser = verifyUser(user, password)
+
+        if(len(verifiedUser) != 0):
+            # Save username for session
+            session['user'] = verifiedUser
             return redirect(url_for("homePage"))
         else:
             return redirect(url_for("login"))
         
-        
-
     return render_template("Login.html")
 
 # TODO - Instead of going straight to the EDF page
