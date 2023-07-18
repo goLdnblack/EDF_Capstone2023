@@ -43,7 +43,7 @@ hw = HashGenerator()
 app = Flask(__name__)
 database = sqlite3.connect("Database_EDF.db", check_same_thread=False)
 
-
+# Start a SQL connection
 def connectDB():
     sql = database.cursor()
     return sql
@@ -53,6 +53,10 @@ def edfIDGenerator():
     edf_id = "%010d" % random.randint(0,9999999999)
     return edf_id
 
+
+# TODO - Register a new user
+def registerUser():
+    return
 
 # TODO - When user signs in with their VID, auto fill form
 # document sections based on their information from the
@@ -87,6 +91,8 @@ def updateEDF():
     return
 
 # TODO - remove auto filled forms in login page
+# TODO - Change to compare both strings
+# after applying to_upper to avoid case sensitive
 def verifyUser(username, password):
     sql = connectDB()
     sql.execute('''
@@ -168,6 +174,11 @@ def formPartOne():
         edf_data[0] = result[0][1]
         edf_data[1] = result[0][0]
         edf_data[2] = request.form["department"]
+        edf_data[3] = request.form["position"]
+        edf_data[4] = request.form["startDate"]
+
+        for key, val in request.form.items():
+            print(str(key), str(val))
 
         return redirect(url_for("formPartTwo"))
 
