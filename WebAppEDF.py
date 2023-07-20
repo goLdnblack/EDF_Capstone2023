@@ -45,7 +45,13 @@ database = sqlite3.connect("Database_EDF.db", check_same_thread=False)
 
 # Start a SQL connection
 def connectDB():
-    sql = database.cursor()
+    try:
+        sql = database.cursor()
+    except:
+        logger.critical(f'Unable to connect to DB.')
+    else:
+        logger.info(f'Successfully connected to DB.')
+
     return sql
 
 # Generate a new unique ID for current EDF
@@ -54,9 +60,30 @@ def edfIDGenerator():
     return edf_id
 
 
-# TODO - Register a new user
-def registerUser():
+# TODO - Define role for user being registered
+def registerUser(vid, name, password):
+    salt = hw.generateSalt()
+    hashed_salt_password = hw.generatePasswordSalt(password, salt)
+
+    sql = connectDB()
+
+    try:
+        sql.execute('''
+                    INSERT INTO USERS (vid, name, password, salt)
+                    VALUES (?, ?, ?, ?)
+                    ''', (vid, name, hashed_salt_password, salt))
+    except:
+        logger.critical(f'Unable to enter {str(vid)} into the database.')
+    else:
+        database.commit()
+        logger.info(f'Successfully registered {str(vid)} into EDF database.')
+
     return
+
+# TODO - The auto complete function (or a different one)
+# should fill the information between form one and form two
+# if the user has saved or wants to go back and edit
+# a different field.
 
 # TODO - When user signs in with their VID, auto fill form
 # document sections based on their information from the
@@ -77,8 +104,8 @@ def autoComplete(vid):
 
 # TODO - check date forms, they are not currently
 # checking if the end date is after the start
-def qualityCheck():
-    return
+def qualityCheck(data):
+    return True
 
 # TODO - When someone else is looking for an existing EDF
 # to approve, this method searches for it. Could find either
@@ -137,6 +164,12 @@ def login():
         if(len(verifiedUser) != 0):
             # Save username for session
             session['user'] = verifiedUser
+
+            # TODO - could create the EDF array
+            # here to begin saving data between
+            # pages
+            # edf_data = [None] * 29
+
             return redirect(url_for("formPartOne"))
         else:
             return redirect(url_for("login"))
@@ -170,17 +203,30 @@ def formPartOne():
     if request.method == "POST":
         # Quality check the data in the forms
         # before entering into database
+
+        # TODO - change to storing the array or values
+        # to session variable
         edf_data = [None] * 29
         edf_data[0] = result[0][1]
         edf_data[1] = result[0][0]
-        edf_data[2] = request.form["department"]
-        edf_data[3] = request.form["position"]
-        edf_data[4] = request.form["startDate"]
+        x = 2
 
+
+        # EDF data is stored in the array in the order
+        # they appear in the EDF form
         for key, val in request.form.items():
-            print(str(key), str(val))
+            #print(str(key), str(val))
+            edf_data[x] = val
+            x += 1
 
-        return redirect(url_for("formPartTwo"))
+        # TODO - quality check the data
+        if (qualityCheck(edf_data)):
+            logger.info(f'Data quality check success.')
+            return redirect(url_for("formPartTwo"))
+        else:
+            logger.info(f'Data quality check failed.')
+            return redirect(url_for("index.html", 
+                                    data=[result[0][1], result[0][0]]))
 
     # Data array is used to display information
     # from python program to HTML page.
@@ -197,15 +243,21 @@ def instructPage():
 # More information required to complete an EDF form
 @app.route("/Form_Continued", methods=["POST", "GET"])
 def formPartTwo():
+    data = request.args.get('data', None)
+
+    if request.method == "POST":
+        for key, val in request.form.items():
+            print(str(key), str(val))
 
     return render_template("Form2Page.html")
+
 
 ###########################
 
 if __name__ == "__main__":
     # Initialize logging
     # init()
-    print('Program start')
+    logger.info(f'Program start')
 
     if hasattr(sys, '_MEIPASS'):
         base_dir = os.path.join(sys._MEIPASS)
