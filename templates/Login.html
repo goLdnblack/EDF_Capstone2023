@@ -32,28 +32,35 @@
 
 
     <body>
-        <h1>
-            Log In
-        </h1>
+        <h2>
+            Log in/Register
+        </h2>
+        <button onclick="document.getElemedById('modal_login').style.display='block'" style="width:auto;">Login</button>
         <br>
-        <form action="/" method="post">
-            <div>
-            <p>
-                Valencia VID:
-            </p>
-            
-            <input type="text" name="vidlogin" placeholder="VID" value="V1000" required/>
+        <div id="modal_login" class="form-container">
+            <span onclick="document.getElemedById('modal_login').style.display='none'" class="close" title="Close Login">&times;</span>
+            <form class="modal-cls" action="/" method="post">
+                <div class="label-container">
+                <p>
+                    Valencia VID:
+                </p>
+                
+                <input type="text" name="vidlogin" placeholder="VID" value="V1000" required/>
+    
+                <p>
+                    Password:
+                </p>
+                <input type="password" name="password" placeholder="Password" value="testpass" required/>
+                <br>
 
-            <p>
-                Password:
-            </p>
-            <input type="password" name="password" placeholder="Password" value="testpass" required/>
-            <br>
-            <div class="button-container">
-                <input type="submit" value="Log In">
-            </div>
-            </div>
-        </form>
+                </div>
+
+                <div class="button-container">
+                    <input type="submit" value="Log In">
+                </div>
+            </form>
+        </div>
+        
     </body>
 
 </html>
