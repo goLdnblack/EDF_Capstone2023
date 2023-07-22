@@ -103,7 +103,26 @@ def autoComplete(vid):
 
 # TODO - check date forms, they are not currently
 # checking if the end date is after the start
+
+# TODO - is there an exemption not being caught
+# if the user is able to enter the URL of form
+# two and bypass the first form?
 def qualityCheck(data):
+    # Data quality checks:
+    # [4] date start time - must be before
+    # course start
+    # [11] and [12] course start and course end
+    # course end cannot be before start
+
+    # TODO - [13] should have extra values for yes
+    # and Masters/Doctorate/Bachelor/Associate
+
+    # Check if list is larger than 14 to check
+    # data in form 2
+
+    # [17] and [18] start date and end date
+    # [18] cannot happen before [17]
+
     return True
 
 # TODO - When someone else is looking for an existing EDF
@@ -162,8 +181,7 @@ def login():
 
         if(len(verifiedUser) != 0):
             # Save username for session
-            session['user'] = []
-            session['user'].append(verifiedUser)
+            session['user'] = verifiedUser
             
 
             # TODO - could create the EDF array
@@ -209,7 +227,7 @@ def formPartOne():
 
     # TODO - could switch back to session[edf]
     # if session.modified fixed the previous issue
-    result = autoComplete(session['user'][0])
+    result = autoComplete(session['user'])
 
     if request.method == "POST":
         # Quality check the data in the forms
@@ -217,24 +235,31 @@ def formPartOne():
 
         # TODO - change to storing the array or values
         # to session variable
-        edf_data = [None] * 29
-        edf_data[0] = result[0][1]
-        edf_data[1] = result[0][0]
-        x = 2
+        #edf_data = [None] * 29
+        #edf_data[0] = result[0][1]
+        #edf_data[1] = result[0][0]
+        #x = 2
+
+        # Reduce size of edfdata to avoid
+        # making a larger list
+        if (len(session['edfdata']) >= 14):
+            for data in session['edfdata']:
+                session['edfdata'].pop()
 
         # EDF data is stored in the array in the order
         # they appear in the EDF form
         for key, val in request.form.items():
             #print(str(key), str(val))
-            edf_data[x] = val
-            session['user'].append(val)
-            x += 1
+            #edf_data[x] = val
+
+            session['edfdata'].append(val)
+            #x += 1
 
         print(f'Size of list in form index: {str(len(session["user"]))}')
         print(f'{str(session["user"])}')
 
         # TODO - quality check the data
-        if (qualityCheck(edf_data)):
+        if (qualityCheck(session['edfdata'])):
             logger.info(f'Data quality check success.')
             return redirect(url_for("formPartTwo"))
         else:
@@ -259,13 +284,21 @@ def instructPage():
 def formPartTwo():
 
     # Bring data from previous session information
-    print(f'{str(session["user"])}')
-    locallist = session.get('user', None)
+    print(f'{str(session["edfdata"])}')
+    locallist = session.get('edfdata', None)
 
 
     print(f'Size of list before POST form continued {str(len(locallist))}')
 
     if request.method == "POST":
+
+        # Reduce size of edfdata to avoid
+        # making a larger list
+        if (len(session['edfdata']) >= 24):
+            for data in session['edfdata']:
+                session['edfdata'].pop()
+
+        
         for key, val in request.form.items():
             #print(str(key), str(val))
             session['edfdata'].append(val)
