@@ -49,6 +49,9 @@ def init_data():
     # TODO - store signatures as BLOB or different data type instead of text.
     # TODO - instead of storing all the information in one big table, make
     # foreign keys to other tables to join the data together
+
+    # TODO - should degree title be another radio button on the
+    # webpage?
     sql.execute('''
                 CREATE TABLE IF NOT EXISTS EDF (
                 name text,

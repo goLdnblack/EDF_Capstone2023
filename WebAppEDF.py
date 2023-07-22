@@ -30,7 +30,6 @@ from HashGenerator import HashGenerator
 # Executable
 base_dir = '.'
 
-
 # Logger
 logDir = (AppLogger.os.getcwd() + '\\log')
 logger = AppLogger.logging.setLoggerClass(AppLogger.LogApp)
@@ -163,12 +162,16 @@ def login():
 
         if(len(verifiedUser) != 0):
             # Save username for session
-            session['user'] = verifiedUser
+            session['user'] = []
+            session['user'].append(verifiedUser)
+            
 
             # TODO - could create the EDF array
             # here to begin saving data between
             # pages
             # edf_data = [None] * 29
+            session['edfdata'] = []
+            
 
             return redirect(url_for("formPartOne"))
         else:
@@ -198,7 +201,15 @@ def login():
 def formPartOne():
     logger.info(f'Loaded blank EDF form')
 
-    result = autoComplete(session['user'])
+    # This line allows the session to be modified
+    # and used on a different route method.
+    # Not sure if it needs to be set on every
+    # route function.
+    session.modified = True
+
+    # TODO - could switch back to session[edf]
+    # if session.modified fixed the previous issue
+    result = autoComplete(session['user'][0])
 
     if request.method == "POST":
         # Quality check the data in the forms
@@ -211,13 +222,16 @@ def formPartOne():
         edf_data[1] = result[0][0]
         x = 2
 
-
         # EDF data is stored in the array in the order
         # they appear in the EDF form
         for key, val in request.form.items():
             #print(str(key), str(val))
             edf_data[x] = val
+            session['user'].append(val)
             x += 1
+
+        print(f'Size of list in form index: {str(len(session["user"]))}')
+        print(f'{str(session["user"])}')
 
         # TODO - quality check the data
         if (qualityCheck(edf_data)):
@@ -243,11 +257,23 @@ def instructPage():
 # More information required to complete an EDF form
 @app.route("/Form_Continued", methods=["POST", "GET"])
 def formPartTwo():
-    data = request.args.get('data', None)
+
+    # Bring data from previous session information
+    print(f'{str(session["user"])}')
+    locallist = session.get('user', None)
+
+
+    print(f'Size of list before POST form continued {str(len(locallist))}')
 
     if request.method == "POST":
         for key, val in request.form.items():
-            print(str(key), str(val))
+            #print(str(key), str(val))
+            session['edfdata'].append(val)
+
+        print(f'Size of list {str(len(session["edfdata"]))}')
+
+        for data in session['edfdata']:
+            print(str(data))
 
     return render_template("Form2Page.html")
 
