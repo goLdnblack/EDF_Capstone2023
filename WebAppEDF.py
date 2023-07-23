@@ -3,12 +3,14 @@ import sqlite3
 
 import os,sys, random
 
+from datetime import datetime
+from datetime import timedelta
+
 # Handle HTML swithing
 from flask import Flask, flash
 from flask import url_for, session
 from flask import render_template, request, redirect
 
-import datetime
 
 # Log application
 import AppLogger
@@ -103,16 +105,29 @@ def autoComplete(vid):
 
 # TODO - check date forms, they are not currently
 # checking if the end date is after the start
-
-# TODO - is there an exemption not being caught
-# if the user is able to enter the URL of form
-# two and bypass the first form?
 def qualityCheck(data):
     # Data quality checks:
     # [4] date start time - must be before
     # course start
     # [11] and [12] course start and course end
     # course end cannot be before start
+
+    datediff = 0
+
+    for x in range(len(data)):
+        fulltime_start = datetime.strptime(data[4], "%Y-%m-%d")
+
+        # The hire date shouldn't be older than at least set amount
+        # of years
+        dayCount = 365 * 80
+        dateDiff = datetime.now() - timedelta(days=(dayCount))
+
+        if fulltime_start <= dateDiff:
+            logger.info(f'Start date older than {str(dayCount/365)} years.')
+            return False
+
+        #if len(data) > 14:
+            
 
     # TODO - [13] should have extra values for yes
     # and Masters/Doctorate/Bachelor/Associate
@@ -164,8 +179,6 @@ def verifyUser(username, password):
 # TODO - HTML section below
 ###########################
 
-
-
 # TODO - Set log in page as initial page
 @app.route("/", methods=["POST", "GET"])
 def login():
@@ -174,7 +187,7 @@ def login():
     
     if request.method == "POST":
         # Verify user credentials match database information
-        user = request.form["vidlogin"]
+        user = request.form["vid"]
         password = request.form["password"]
 
         verifiedUser = verifyUser(user, password)
@@ -193,9 +206,16 @@ def login():
 
             return redirect(url_for("formPartOne"))
         else:
+            flash('Incorrect username/password.')
             return redirect(url_for("login"))
         
     return render_template("Login.html")
+
+# TODO - User registering to the EDF database
+@app.route("/Register", methods=["POST", "GET"])
+def register():
+
+    return render_template("Register.html")
 
 # TODO - Instead of going straight to the EDF page
 # the first page could show a list of current EDF's
@@ -264,7 +284,8 @@ def formPartOne():
             return redirect(url_for("formPartTwo"))
         else:
             logger.info(f'Data quality check failed.')
-            return redirect(url_for("index.html", 
+            flash('Check data entered in form.')
+            return redirect(url_for("formPartOne", 
                                     data=[result[0][1], result[0][0]]))
 
     # Data array is used to display information
@@ -284,11 +305,12 @@ def instructPage():
 def formPartTwo():
 
     # Bring data from previous session information
-    print(f'{str(session["edfdata"])}')
     locallist = session.get('edfdata', None)
 
-
-    print(f'Size of list before POST form continued {str(len(locallist))}')
+    # If the list is empty, return to
+    # the first form
+    if (len(locallist) < 1):
+        return redirect(url_for("formPartOne"))
 
     if request.method == "POST":
 

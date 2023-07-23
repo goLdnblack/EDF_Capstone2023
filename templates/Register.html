@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login Screen</title>
+    <title>Registration Page</title>
     <!--link rel="stylesheet" type="text/css" href="registrationStyle.css"-->
     <link href="{{ url_for('static',filename='styles/css/registrationStyle.css') }}" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1>Log In</h1>
-        <form id="loginForm" action="/" method="post">
+        <h1>Registration</h1>
+        <form id="registrationForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
             <label for="vid">VID:</label>
             <input type="text" id="vid" name="vid" required>
 
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
 
-            <button type="submit" id="loginButton">Log In</button>
+            <button type="submit" id="registerButton">Register</button>
         </form>
     </div>
 
-    <!--script src="loginScript.js"></script-->
+    <!--script src="script.js"></script>-->
 </body>
 </html>
