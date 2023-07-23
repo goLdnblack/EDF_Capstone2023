@@ -3,12 +3,14 @@ import sqlite3
 
 import os,sys, random
 
+from datetime import datetime
+from datetime import timedelta
+
 # Handle HTML swithing
 from flask import Flask, flash
 from flask import url_for, session
 from flask import render_template, request, redirect
 
-import datetime
 
 # Log application
 import AppLogger
@@ -29,7 +31,6 @@ from HashGenerator import HashGenerator
 
 # Executable
 base_dir = '.'
-
 
 # Logger
 logDir = (AppLogger.os.getcwd() + '\\log')
@@ -105,6 +106,38 @@ def autoComplete(vid):
 # TODO - check date forms, they are not currently
 # checking if the end date is after the start
 def qualityCheck(data):
+    # Data quality checks:
+    # [4] date start time - must be before
+    # course start
+    # [11] and [12] course start and course end
+    # course end cannot be before start
+
+    datediff = 0
+
+    for x in range(len(data)):
+        fulltime_start = datetime.strptime(data[4], "%Y-%m-%d")
+
+        # The hire date shouldn't be older than at least set amount
+        # of years
+        dayCount = 365 * 80
+        dateDiff = datetime.now() - timedelta(days=(dayCount))
+
+        if fulltime_start <= dateDiff:
+            logger.info(f'Start date older than {str(dayCount/365)} years.')
+            return False
+
+        #if len(data) > 14:
+            
+
+    # TODO - [13] should have extra values for yes
+    # and Masters/Doctorate/Bachelor/Associate
+
+    # Check if list is larger than 14 to check
+    # data in form 2
+
+    # [17] and [18] start date and end date
+    # [18] cannot happen before [17]
+
     return True
 
 # TODO - When someone else is looking for an existing EDF
@@ -146,8 +179,6 @@ def verifyUser(username, password):
 # TODO - HTML section below
 ###########################
 
-
-
 # TODO - Set log in page as initial page
 @app.route("/", methods=["POST", "GET"])
 def login():
@@ -156,7 +187,7 @@ def login():
     
     if request.method == "POST":
         # Verify user credentials match database information
-        user = request.form["vidlogin"]
+        user = request.form["vid"]
         password = request.form["password"]
 
         verifiedUser = verifyUser(user, password)
@@ -164,17 +195,27 @@ def login():
         if(len(verifiedUser) != 0):
             # Save username for session
             session['user'] = verifiedUser
+            
 
             # TODO - could create the EDF array
             # here to begin saving data between
             # pages
             # edf_data = [None] * 29
+            session['edfdata'] = []
+            
 
             return redirect(url_for("formPartOne"))
         else:
+            flash('Incorrect username/password.')
             return redirect(url_for("login"))
         
     return render_template("Login.html")
+
+# TODO - User registering to the EDF database
+@app.route("/Register", methods=["POST", "GET"])
+def register():
+
+    return render_template("Register.html")
 
 # TODO - Instead of going straight to the EDF page
 # the first page could show a list of current EDF's
@@ -198,6 +239,14 @@ def login():
 def formPartOne():
     logger.info(f'Loaded blank EDF form')
 
+    # This line allows the session to be modified
+    # and used on a different route method.
+    # Not sure if it needs to be set on every
+    # route function.
+    session.modified = True
+
+    # TODO - could switch back to session[edf]
+    # if session.modified fixed the previous issue
     result = autoComplete(session['user'])
 
     if request.method == "POST":
@@ -206,26 +255,37 @@ def formPartOne():
 
         # TODO - change to storing the array or values
         # to session variable
-        edf_data = [None] * 29
-        edf_data[0] = result[0][1]
-        edf_data[1] = result[0][0]
-        x = 2
+        #edf_data = [None] * 29
+        #edf_data[0] = result[0][1]
+        #edf_data[1] = result[0][0]
+        #x = 2
 
+        # Reduce size of edfdata to avoid
+        # making a larger list
+        if (len(session['edfdata']) >= 14):
+            for data in session['edfdata']:
+                session['edfdata'].pop()
 
         # EDF data is stored in the array in the order
         # they appear in the EDF form
         for key, val in request.form.items():
             #print(str(key), str(val))
-            edf_data[x] = val
-            x += 1
+            #edf_data[x] = val
+
+            session['edfdata'].append(val)
+            #x += 1
+
+        print(f'Size of list in form index: {str(len(session["user"]))}')
+        print(f'{str(session["user"])}')
 
         # TODO - quality check the data
-        if (qualityCheck(edf_data)):
+        if (qualityCheck(session['edfdata'])):
             logger.info(f'Data quality check success.')
             return redirect(url_for("formPartTwo"))
         else:
             logger.info(f'Data quality check failed.')
-            return redirect(url_for("index.html", 
+            flash('Check data entered in form.')
+            return redirect(url_for("formPartOne", 
                                     data=[result[0][1], result[0][0]]))
 
     # Data array is used to display information
@@ -243,11 +303,32 @@ def instructPage():
 # More information required to complete an EDF form
 @app.route("/Form_Continued", methods=["POST", "GET"])
 def formPartTwo():
-    data = request.args.get('data', None)
+
+    # Bring data from previous session information
+    locallist = session.get('edfdata', None)
+
+    # If the list is empty, return to
+    # the first form
+    if (len(locallist) < 1):
+        return redirect(url_for("formPartOne"))
 
     if request.method == "POST":
+
+        # Reduce size of edfdata to avoid
+        # making a larger list
+        if (len(session['edfdata']) >= 24):
+            for data in session['edfdata']:
+                session['edfdata'].pop()
+
+        
         for key, val in request.form.items():
-            print(str(key), str(val))
+            #print(str(key), str(val))
+            session['edfdata'].append(val)
+
+        print(f'Size of list {str(len(session["edfdata"]))}')
+
+        for data in session['edfdata']:
+            print(str(data))
 
     return render_template("Form2Page.html")
 
