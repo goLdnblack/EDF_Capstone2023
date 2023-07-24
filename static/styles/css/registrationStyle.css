@@ -18,6 +18,23 @@ body {
     text-align: center; /* Center all content within the container */
 }
 
+p.warning {
+	font-size: 15px;
+	font-family: verdana;
+	border: none;
+	border-radius: 8px;
+	padding: 10px 15px;
+    position: absolute;
+	top: 0;
+}
+
+p span {
+	background-color: rgb(241, 241, 222);
+	border: thin;
+	padding: 12px 15px;
+	text-align: center;
+}
+
 form {
     width: 300px; /* Set a fixed width for the form */
     margin: 0 auto; /* Center the form horizontally */

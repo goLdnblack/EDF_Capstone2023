@@ -156,9 +156,9 @@ def updateEDF():
 def verifyUser(username, password):
     sql = connectDB()
     sql.execute('''
-                SELECT vid, password, salt FROM USERS
+                SELECT UPPER(vid), password, salt FROM USERS
                 WHERE vid=?
-                ''', (username,))
+                ''', (username.upper(),))
     #sql.execute('''SELECT * FROM USERS''')
     result = sql.fetchall()
 
@@ -186,6 +186,8 @@ def login():
     logger.info(f'User attempting to log in')
     
     if request.method == "POST":
+        session.permanent = True
+
         # Verify user credentials match database information
         user = request.form["vid"]
         password = request.form["password"]
@@ -206,7 +208,7 @@ def login():
 
             return redirect(url_for("formPartOne"))
         else:
-            flash('Incorrect username/password.')
+            flash('\nIncorrect username/password.')
             return redirect(url_for("login"))
         
     return render_template("Login.html")

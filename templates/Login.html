@@ -6,6 +6,15 @@
     <link href="{{ url_for('static',filename='styles/css/registrationStyle.css') }}" rel="stylesheet">
 </head>
 <body>
+    <!-- Flash message when user enters the wrong password/username-->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p class="warning"><span>{{ message }}</span></p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
     <div class="container">
         <h1>Log In</h1>
         <form id="loginForm" action="/" method="post">
@@ -18,6 +27,7 @@
             <button type="submit" id="loginButton">Log In</button>
         </form>
     </div>
+    <br>
 
     <!--script src="loginScript.js"></script-->
 </body>
