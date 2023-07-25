@@ -28,6 +28,7 @@
   <!-- JS -->
   <!--<script src="js/main.js"></script>-->
   <script src="{{url_for('static', filename='js/main.js')}}"></script>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='styles/img/favicon.ico') }}">
 </head>
 
 <body>
@@ -53,17 +54,17 @@
 
     <div class="label-container">
     <label for="department">Department:</label>
-    <input type="text" id="department" name="department" required>
+    <input type="text" id="department" name="department" value="{{data[2]}}" required>
     </div>
 
       <div class="label-container">
     <label for="position">Position:</label>
-    <input type="text" id="position" name="position" required>
+    <input type="text" id="position" name="position" value="{{data[3]}}" required>
       </div>
 
     <div class="label-container">
     <label for="startDate">Start date of Full-Time Employment:</label>
-    <input type="date" id="startDate" name="startDate" required>
+    <input type="date" id="startDate" name="startDate" value="{{data[4]}}" required>
     </div><br>
 
       <div class="label-container">
@@ -72,28 +73,28 @@
 
     <p><b>2.Academic Information</b> (Use this section for external college or university courses) </p>
     <label for="courseName">Course Name:</label>
-    <input type="text" id="courseName" name="courseName" required><br>
+    <input type="text" id="courseName" name="courseName" value="{{data[5]}}" required><br>
 
     <div class="label-container">
     <label for="courseNumber">Course Number:</label>
-    <input type="text" id="courseNumber" name="courseNumber" required><br>
+    <input type="text" id="courseNumber" name="courseNumber" value="{{data[6]}}" required><br>
     </div>
     <div class="label-container">
     <label for="creditHours">Credit Hours:</label>
-    <input type="number" id="creditHours" name="creditHours" required><br>
+    <input type="number" id="creditHours" name="creditHours" value="{{data[7]}}" required><br>
     </div><br>
     <label for="degreeProgram">Title of Degree/Certificate Program:</label>
-    <input type="text" id="degreeProgram" name="degreeProgram" required><br>
+    <input type="text" id="degreeProgram" name="degreeProgram" value="{{data[8]}}" required><br>
 
     <label for="university">College/University:</label>
-    <input type="text" id="university" name="university" required><br>
+    <input type="text" id="university" name="university" value="{{data[9]}}" required><br>
 
     <div class="label-container">
     <label for="courseStartDate">Course Start Date:</label>
-    <input type="date" id="courseStartDate" name="courseStartDate" required><br> </div>
+    <input type="date" id="courseStartDate" name="courseStartDate" value="{{data[10]}}" required><br> </div>
       <div class="label-container">
     <label for="courseEndDate">Course End Date:</label>
-    <input type="date" id="courseEndDate" name="courseEndDate" required> </div><br>
+    <input type="date" id="courseEndDate" name="courseEndDate" value="{{data[11]}}" required> </div><br>
 
 
     <label for="degreeCheckbox">Is this course part of a degree program?</label><br>
@@ -107,6 +108,19 @@
 
     <br><div id="degreeOptions" style="display: none;">
     <p><b>if yes, check the degree type that applies.</b></p>
+    <input type="radio" id="doctorateCheckbox" name="degreeType" value="Doctorate">
+    <label for="doctorateCheckbox">Doctorate</label>
+    <input type="radio" id="masterCheckbox" name="degreeType" value="Master">
+    <label for="masterCheckbox">Master</label>
+    <input type="radio" id="bachelorCheckbox" name="degreeType" value="Bachelor">
+    <label for="bachelorCheckbox">Bachelor</label>
+    <input type="radio" id="associateCheckbox" name="degreeType" value="Associate">
+    <label for="associateCheckbox">Associate</label>
+    
+    </div><br>
+
+    <!--<br><div id="degreeOptions" style="display: none;">
+    <p><b>if yes, check the degree type that applies.</b></p>
       <input type="checkbox" id="doctorateCheckbox" name="degreeType" value="Doctorate">
       <label for="doctorateCheckbox">Doctorate</label>
       <input type="checkbox" id="mastersCheckbox" name="degreeType" value="Master's">
@@ -115,7 +129,7 @@
       <label for="bachelorsCheckbox">Bachelors</label>
       <input type="checkbox" id="associatesCheckbox" name="degreeType" value="Associates">
       <label for="associatesCheckbox">Associates</label><br>
-    </div><br>
+    </div><br>-->
 
     <!-- Second Page of the form-->
 

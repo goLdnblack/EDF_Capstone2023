@@ -4,8 +4,14 @@
     <title>Registration Page</title>
     <!--link rel="stylesheet" type="text/css" href="registrationStyle.css"-->
     <link href="{{ url_for('static',filename='styles/css/registrationStyle.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='styles/img/favicon.ico') }}">
 </head>
 <body>
+    <div class="menubar">
+        <a href="/Register">Register</a>
+        <a class="active" href="/">Log In</a>
+    </div> 
+
     <div class="container">
         <h1>Registration</h1>
         <form id="registrationForm">
