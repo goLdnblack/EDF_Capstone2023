@@ -68,6 +68,8 @@ def registerUser(vid, name, password):
 
     sql = connectDB()
 
+    # TODO - sql query if the user exists first
+
     try:
         sql.execute('''
                     INSERT INTO USERS (vid, name, password, salt)
@@ -129,8 +131,9 @@ def qualityCheck(data):
         #if len(data) > 14:
             
 
-    # TODO - [13] should have extra values for yes
-    # and Masters/Doctorate/Bachelor/Associate
+    # TODO - [13] could be designed
+    # with a drop down menu to allow
+    # for different types of degrees
 
     # Check if list is larger than 14 to check
     # data in form 2

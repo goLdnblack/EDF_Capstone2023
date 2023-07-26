@@ -18,17 +18,19 @@
 
     <div class="menubar">
         <a href="/Register">Register</a>
-        <a class="active" href="/">Log In</a>
+        <a class="active" href="/">EDF Log In</a>
     </div>
     
     <div class="container">
-        <h1>Log In</h1>
+        <h1>EDF Log In</h1>
         <form id="loginForm" action="/" method="post">
-            <label for="vid">VID:</label>
-            <input type="text" id="vid" name="vid" required>
+            <!--<label for="vid">VID:</label>-->
+            <input type="text" id="vid" name="vid" placeholder="VID" required>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+            <br>
+
+            <!--<label for="password">Password:</label>-->
+            <input type="password" id="password" name="password" placeholder="Password" required>
 
             <button type="submit" id="loginButton">Log In</button>
         </form>
