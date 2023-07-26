@@ -63,12 +63,17 @@ def edfIDGenerator():
 
 # TODO - Define role for user being registered
 def registerUser(vid, name, password):
+    
+    # Check if the user already registered
+    # in the database
+    if (len(verifyUser(vid)) == 0):
+        logger.info(f'User already exists in the database.')
+        return
+
     salt = hw.generateSalt()
     hashed_salt_password = hw.generatePasswordSalt(password, salt)
 
     sql = connectDB()
-
-    # TODO - sql query if the user exists first
 
     try:
         sql.execute('''
@@ -116,30 +121,40 @@ def qualityCheck(data):
 
     datediff = 0
 
-    for x in range(len(data)):
-        fulltime_start = datetime.strptime(data[4], "%Y-%m-%d")
+    #for x in range(len(data)):
+    fulltime_start = datetime.strptime(data[4], "%Y-%m-%d")
 
-        # The hire date shouldn't be older than at least set amount
-        # of years
-        dayCount = 365 * 80
-        dateDiff = datetime.now() - timedelta(days=(dayCount))
+    # The hire date shouldn't be older than at least set amount
+    # of years
+    dayCount = 365 * 80
+    dateDiff = datetime.now() - timedelta(days=(dayCount))
 
-        if fulltime_start <= dateDiff:
-            logger.info(f'Start date older than {str(dayCount/365)} years.')
+    if fulltime_start <= dateDiff:
+        logger.info(f'Start date older than {str(dayCount/365)} years.')
+        return False
+        
+    # Check course dates
+    #print(f'{data[9]}\n{data[10]}\n{data[11]}')
+    course_start = datetime.strptime(data[10], "%Y-%m-%d")
+    course_end = datetime.strptime(data[11], "%Y-%m-%d")
+
+    if (course_end < course_start):
+        logger.info(f'Course end date happens before the start date.')
+        return False
+
+    # Check if user is in the first part of the form
+    if data[18] != None:
+        conf_start = datetime.strptime(data[17], "%Y-%m-%d")
+        conf_end = datetime.strptime(data[18], "%Y-%m-%d")
+
+        if (conf_end < conf_start):
+            logger.info(f'Conference end date happens before the start date.')
             return False
-
-        #if len(data) > 14:
             
 
     # TODO - [13] could be designed
     # with a drop down menu to allow
     # for different types of degrees
-
-    # Check if list is larger than 14 to check
-    # data in form 2
-
-    # [17] and [18] start date and end date
-    # [18] cannot happen before [17]
 
     return True
 
@@ -151,6 +166,103 @@ def getEDF():
 
 # TODO - Update current EDF
 def updateEDF():
+    return
+
+def createEDF(data):
+    sql = connectDB()
+
+    edf_id = edfIDGenerator()
+
+    sql.execute('''
+                SELECT edf_id FROM EDF
+                WHERE edf_id=?
+                ''', (edf_id,))
+    
+    result = sql.fetchall()
+
+    # Generate a new unique ID until there
+    # isn't one in the database already
+    while (len(result) != 0):
+        edf_id = edfIDGenerator()
+        sql.execute('''
+                SELECT edf_id FROM EDF
+                WHERE edf_id=?
+                ''', (edf_id,))
+        result = sql.fetchall()
+    
+    # TODO - admin signature value is blank,
+    # edf submitted should be 0 or 1 based on
+    # the save or submit button.
+    admin_signature = ""
+    save_submit = 1
+
+    # TODO - array value [5] and [6] should
+    # be the account id and budget index,
+    # unless they are fed separeately
+    # into the EDF outside of the array
+    bdgt_index = "121800"
+    account = "598030"
+
+
+    sql.execute('''
+                INSERT INTO EDF (
+                name,
+                vid,
+                department,
+                position,
+                edf_start,
+                budget_index,
+                account_id,
+                course_name,
+                course_number,
+                credit_hours,
+                degree_title,
+                college,
+                course_start,
+                course_end,
+                degree_program,
+                out_of_pocket,
+                workshop_title,
+                host,
+                location,
+                workshop_start,
+                workshop_end,
+                registration_cost,
+                registration_pay_method,
+                purpose,
+                benefit_college,
+                employee_signature,
+                admin_signature,
+                edf_submitted,
+                edf_id
+                )
+                VALUES (
+                ?, ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?                
+                )
+                ''',
+                (data[0],data[1],
+                 data[2],data[3],
+                 data[4],bdgt_index,
+                 account,data[5],
+                 data[6],data[7],
+                 data[8],data[9],
+                 data[10],data[11],
+                 data[12],data[13],
+                 data[14],data[15],
+                 data[16],data[17],
+                 data[18],data[19],
+                 data[20],data[21],
+                 data[22],data[23],
+                 admin_signature,
+                 save_submit,
+                 edf_id,))
+    
+    database.commit()
+    logger.info(f'Successfully updated database edf id {edf_id}')
     return
 
 # TODO - remove auto filled forms in login page
@@ -201,12 +313,7 @@ def login():
             # Save username for session
             session['user'] = verifiedUser
             
-
-            # TODO - could create the EDF array
-            # here to begin saving data between
-            # pages
-            # edf_data = [None] * 29
-            session['edfdata'] = []
+            session['edfdata'] = [None] * 29
             
 
             return redirect(url_for("formPartOne"))
@@ -267,28 +374,33 @@ def formPartOne():
 
         # Reduce size of edfdata to avoid
         # making a larger list
-        if (len(session['edfdata']) >= 14):
-            for data in session['edfdata']:
-                session['edfdata'].pop()
+        #if (len(session['edfdata']) >= 14):
+        #    for data in session['edfdata']:
+        #        session['edfdata'].pop()
 
+        x = 0
         # EDF data is stored in the array in the order
         # they appear in the EDF form
         for key, val in request.form.items():
             #print(str(key), str(val))
             #edf_data[x] = val
 
-            session['edfdata'].append(val)
-            #x += 1
+            #session['edfdata'].append(val)
+            session['edfdata'][x] = val
+            x += 1
 
-        print(f'Size of list in form index: {str(len(session["user"]))}')
-        print(f'{str(session["user"])}')
-
-        # TODO - quality check the data
+        # TODO - using data variable may show
+        # the user data on the webpage url
+        
+        # TODO - fix by using {{session['edfdata']}}
+        # in the html page instead of {{data}}
         if (qualityCheck(session['edfdata'])):
             logger.info(f'Data quality check success.')
             return redirect(url_for("formPartTwo"))
         else:
             logger.info(f'Data quality check failed.')
+            # TODO - make flash be part of a group
+            # that only shows up in the form page
             flash('Check data entered in form.')
             return redirect(url_for("formPartOne", 
                                     data=[result[0][1], result[0][0]]))
@@ -321,24 +433,41 @@ def formPartTwo():
 
         # Reduce size of edfdata to avoid
         # making a larger list
-        if (len(session['edfdata']) >= 24):
-            for data in session['edfdata']:
-                session['edfdata'].pop()
+        #if (len(session['edfdata']) >= 24):
+        #    for data in session['edfdata']:
+        #        session['edfdata'].pop()
 
-        
+        x = 14
+
         for key, val in request.form.items():
             #print(str(key), str(val))
-            session['edfdata'].append(val)
+            #session['edfdata'].append(val)
+            session['edfdata'][x] = val
+            x += 1
 
-        print(f'Size of list {str(len(session["edfdata"]))}')
+        y = 0
+        for x in session['edfdata']:
+            print(f'[{y}]: {x}')
+            y += 1
 
-        for data in session['edfdata']:
-            print(str(data))
+        if (qualityCheck(session['edfdata'])):
+            logger.info(f'Data quality check success.')
+
+            # Enter data into the database
+            createEDF(session['edfdata'])
+            
+            return redirect(url_for("formPartTwo"))
+        else:
+            logger.info(f'Data quality check failed.')
+            # TODO - make flash be part of a group
+            # that only shows up in the form page
+            flash('Check data entered in form.')
+            return redirect(url_for("formPartTwo"))
 
     return render_template("Form2Page.html")
 
-
 ###########################
+# END OF HTML CODE
 
 if __name__ == "__main__":
     # Initialize logging

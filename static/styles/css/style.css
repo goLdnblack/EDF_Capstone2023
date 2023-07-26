@@ -75,6 +75,34 @@ input:focus {
   margin-right: 10px; /* Add right margin for spacing */
 }
 
+p.warning {
+	font-size: 15px;
+	font-family: verdana;
+	border: none;
+	border-radius: 8px;
+	padding: 10px 15px;
+  position: absolute;
+	top: 0;
+}
+
+p.warning_index {
+	font-size: 15px;
+	font-family: verdana;
+	border: none;
+	border-radius: 8px;
+	padding: 10px 15px;
+  position: absolute;
+	top: 0;
+  right: 910px
+}
+
+p span {
+	background-color: rgb(241, 241, 222);
+	border: thin;
+	padding: 12px 15px;
+	text-align: center;
+}
+
 
 
 /* Default style for buttons */

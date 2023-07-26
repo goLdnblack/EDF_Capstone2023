@@ -26,9 +26,6 @@ def createDB(db):
         if connection:
             connection.close()
 
-# TODO - encrypt user passwords entered into
-# user database
-
 # Enter data into the DB to test
 def init_data():
     db = sqlite3.connect("Database_EDF.db", check_same_thread=False)
