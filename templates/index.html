@@ -53,27 +53,27 @@
 
     <div class="label-container">
     <label for="name">Name:</label>
-    <input type="text" id="name" name="name" value="{{data[0]}}" required>
+    <input type="text" id="name" name="name" value="{{session['edfdata'][0]}}" required>
     </div>
 
     <div class="label-container">
     <label for="employeeVID">Employee VID:</label>
-    <input type="text" id="employeeVID" name="employeeVID" value="{{data[1]}}" required><br>
+    <input type="text" id="employeeVID" name="employeeVID" value="{{session['edfdata'][1]}}" required><br>
     </div>
 
     <div class="label-container">
     <label for="department">Department:</label>
-    <input type="text" id="department" name="department" value="{{data[2]}}" required>
+    <input type="text" id="department" name="department" value="{{session['edfdata'][2]}}" required>
     </div>
 
       <div class="label-container">
     <label for="position">Position:</label>
-    <input type="text" id="position" name="position" value="{{data[3]}}" required>
+    <input type="text" id="position" name="position" value="{{session['edfdata'][3]}}" required>
       </div>
 
     <div class="label-container">
     <label for="startDate">Start date of Full-Time Employment:</label>
-    <input type="date" id="startDate" name="startDate" value="{{data[4]}}" required>
+    <input type="date" id="startDate" name="startDate" value="{{session['edfdata'][4]}}" required>
     </div><br>
 
       <div class="label-container">
@@ -82,32 +82,32 @@
 
     <p><b>2.Academic Information</b> (Use this section for external college or university courses) </p>
     <label for="courseName">Course Name:</label>
-    <input type="text" id="courseName" name="courseName" value="{{data[5]}}" required><br>
+    <input type="text" id="courseName" name="courseName" value="{{session['edfdata'][5]}}" required><br>
 
     <div class="label-container">
     <label for="courseNumber">Course Number:</label>
-    <input type="text" id="courseNumber" name="courseNumber" value="{{data[6]}}" required><br>
+    <input type="text" id="courseNumber" name="courseNumber" value="{{session['edfdata'][6]}}" required><br>
     </div>
     <div class="label-container">
     <label for="creditHours">Credit Hours:</label>
-    <input type="number" id="creditHours" name="creditHours" value="{{data[7]}}" required><br>
+    <input type="number" id="creditHours" name="creditHours" value="{{session['edfdata'][7]}}" required><br>
     </div><br>
     <label for="degreeProgram">Title of Degree/Certificate Program:</label>
-    <input type="text" id="degreeProgram" name="degreeProgram" value="{{data[8]}}" required><br>
+    <input type="text" id="degreeProgram" name="degreeProgram" value="{{session['edfdata'][8]}}" required><br>
 
     <label for="university">College/University:</label>
-    <input type="text" id="university" name="university" value="{{data[9]}}" required><br>
+    <input type="text" id="university" name="university" value="{{session['edfdata'][9]}}" required><br>
 
     <div class="label-container">
     <label for="courseStartDate">Course Start Date:</label>
-    <input type="date" id="courseStartDate" name="courseStartDate" value="{{data[10]}}" required><br> </div>
+    <input type="date" id="courseStartDate" name="courseStartDate" value="{{session['edfdata'][10]}}" required><br> </div>
       <div class="label-container">
     <label for="courseEndDate">Course End Date:</label>
-    <input type="date" id="courseEndDate" name="courseEndDate" value="{{data[11]}}" required> </div><br>
+    <input type="date" id="courseEndDate" name="courseEndDate" value="{{session['edfdata'][11]}}" required> </div><br>
 
 
     <label for="degreeCheckbox">Is this course part of a degree program?</label><br>
-      <input type="radio" id="yesCheckbox" name="degreeType" value="Yes" onclick="toggleDegreeOptions(true)">
+      <input type="radio" id="yesCheckbox" name="degreeType" value="Yes" onclick="toggleDegreeOptions(true)" required>
       <label for="yesCheckbox">Yes</label>
 
     <div class="radio-container">

@@ -37,24 +37,24 @@
   <p><b>3.Conference / Workshop / Seminar / Training Course Information</b></p>
 
   <label for="InformationTitle">Title:</label>
-  <input type="text" id="InformationTitle" name="InformationTitle" required><br>
+  <input type="text" id="InformationTitle" name="InformationTitle" value="{{session['edfdata'][14]}}" required><br>
 
   <label for="InformationHost">Host Organization(if applicable):</label>
-  <input type="text" id="InformationHost" name="InformationHost" ><br>
+  <input type="text" id="InformationHost" name="InformationHost" value="{{session['edfdata'][15]}}"><br>
 
   <label for="InformationLocation">Location:</label>
-  <input type="text" id="InformationLocation" name="InformationLocation" required><br>
+  <input type="text" id="InformationLocation" name="InformationLocation" value="{{session['edfdata'][16]}}" required><br>
 
   <div class="label-container">
     <label for="DateStartDate">Start Date:</label>
-    <input type="date" id="DateStartDate" name="DateStartDate" required><br> </div>
+    <input type="date" id="DateStartDate" name="DateStartDate" value="{{session['edfdata'][17]}}" required><br> </div>
   <div class="label-container">
     <label for="DateEndDate">End Date:</label>
-    <input type="date" id="DateEndDate" name="DateEndDate" required> </div><br>
+    <input type="date" id="DateEndDate" name="DateEndDate" value="{{session['edfdata'][18]}}" required> </div><br>
 
 
   <label for="informationCostRegistration">Cost of Registration:</label>
-  <input type="text" id="informationCostRegistration" name="informationCostRegistration" required><br>
+  <input type="text" id="informationCostRegistration" name="informationCostRegistration" value="{{session['edfdata'][19]}}" required><br>
 
   <label for="registrationPayment">How will the registration be paid?</label><br>
 
@@ -72,14 +72,14 @@
 
 
   <label for="informationPurpose"><b>4.Purpose (Why are you taking this course or attending this conference?)</b></label>
-  <input type="text" id="informationPurpose" name="informationPurpose" required><br>
+  <input type="text" id="informationPurpose" name="informationPurpose" value="{{session['edfdata'][21]}}" required><br>
 
   <label for="informationBenefitCollege">Benefit to the College (How will this course or conference aid you in your job or future professional position?)</label>
-  <input type="text" id="informationBenefitCollege" name="informationBenefitCollege" required><br>
+  <input type="text" id="informationBenefitCollege" name="informationBenefitCollege" value="{{session['edfdata'][22]}}" required><br>
 
   <div class="label-container">
   <label for="signature">Signature <b>(Type your First and Last Name)</b>:</label>
-  <input type="text" id="signature" name="signature" required>
+  <input type="text" id="signature" name="signature" value="{{session['edfdata'][23]}}" required>
   </div>
 
   <div class="label-container">

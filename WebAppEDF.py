@@ -143,7 +143,7 @@ def qualityCheck(data):
         return False
 
     # Check if user is in the first part of the form
-    if data[18] != None:
+    if data[18] != "":
         conf_start = datetime.strptime(data[17], "%Y-%m-%d")
         conf_end = datetime.strptime(data[18], "%Y-%m-%d")
 
@@ -313,10 +313,11 @@ def login():
             # Save username for session
             session['user'] = verifiedUser
             
-            session['edfdata'] = [None] * 29
+            session['edfdata'] = [""] * 29
             
-            return redirect(url_for("edfMenu"))
-            #return redirect(url_for("formPartOne"))
+            # Load EDF list
+            #return redirect(url_for("edfMenu"))
+            return redirect(url_for("formPartOne"))
         else:
             flash('\nIncorrect username/password.')
             return redirect(url_for("login"))
@@ -366,6 +367,8 @@ def formPartOne():
     # TODO - could switch back to session[edf]
     # if session.modified fixed the previous issue
     result = autoComplete(session['user'])
+    session['edfdata'][0] = result[0][1]
+    session['edfdata'][1] = result[0][0]
 
     if request.method == "POST":
         # Quality check the data in the forms
@@ -408,13 +411,11 @@ def formPartOne():
             # TODO - make flash be part of a group
             # that only shows up in the form page
             flash('Check data entered in form.')
-            return redirect(url_for("formPartOne", 
-                                    data=[result[0][1], result[0][0]]))
+            return redirect(url_for("formPartOne"))
 
     # Data array is used to display information
     # from python program to HTML page.
-    return render_template("index.html", 
-                           data=[result[0][1], result[0][0]])
+    return render_template("index.html")
 
 # Information page on how to navigate site
 @app.route("/Instructions", methods=["POST", "GET"])
