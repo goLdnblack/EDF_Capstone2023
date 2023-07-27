@@ -193,3 +193,29 @@ button {
   line-height: 1;
 }
 
+.menubar {
+  background-color: #45a049;
+  overflow: hidden;
+  position: absolute;
+top: 0;
+  left: 0;
+}
+
+.menubar a {
+  float: left;
+  color:#ffffff;
+  text-align: center;
+  padding: 12px 15px;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.menubar a:hover {
+  background-color: #ddd;
+  color:gray;
+}
+
+.menubar a:active {
+  background-color: #45a049;
+  color: white;
+}

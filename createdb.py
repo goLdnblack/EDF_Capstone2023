@@ -46,9 +46,6 @@ def init_data():
     # TODO - store signatures as BLOB or different data type instead of text.
     # TODO - instead of storing all the information in one big table, make
     # foreign keys to other tables to join the data together
-
-    # TODO - should degree title be another radio button on the
-    # webpage?
     sql.execute('''
                 CREATE TABLE IF NOT EXISTS EDF (
                 name text,
@@ -56,8 +53,6 @@ def init_data():
                 department text,
                 position text,
                 edf_start date,
-                budget_index text,
-                account_id text,
                 course_name text,
                 course_number text,
                 credit_hours int,
@@ -78,6 +73,8 @@ def init_data():
                 benefit_college text,
                 employee_signature text,
                 admin_signature text,
+                budget_index text,
+                account_id text,
                 edf_submitted varchar(1),
                 edf_id text NOT NULL
                 )
@@ -119,5 +116,6 @@ def enterData():
 if __name__ == '__main__':
     # Uncomment to create a new
     # empty database.
-    enterData()
+    #enterData()
+    init_data()
     # createDB("Database_EDF.db")

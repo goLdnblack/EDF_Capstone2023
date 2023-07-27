@@ -158,6 +158,9 @@ def qualityCheck(data):
     if data[18] != "":
         conf_start = datetime.strptime(data[17], "%Y-%m-%d")
         conf_end = datetime.strptime(data[18], "%Y-%m-%d")
+    #if data[20] != "":
+    #    conf_start = datetime.strptime(data[19], "%Y-%m-%d")
+    #    conf_end = datetime.strptime(data[20], "%Y-%m-%d")
 
         if (conf_end < conf_start):
             logger.info(f'Conference end date happens before the start date.')
@@ -199,7 +202,60 @@ def getEDF(edf_id):
     return result
 
 # TODO - Update current EDF
-def updateEDF():
+# Fields that aren't updated are
+# account ID, budget index, edf id
+def updateEDF(data):
+    sql = connectDB()
+    # TODO - This value can be passed to
+    # the function when the user is ready to
+    # submit the EDF officially
+    save_submit = 1
+    sql.execute('''
+                UPDATE EDF
+                SET name=?,
+                vid=?,
+                department=?,
+                position=?,
+                edf_start=?,
+                course_name=?,
+                course_number=?,
+                credit_hours=?,
+                degree_title=?,
+                college=?,
+                course_start=?,
+                course_end=?,
+                degree_program=?,
+                out_of_pocket=?,
+                workshop_title=?,
+                host=?,
+                location=?,
+                workshop_start=?,
+                workshop_end=?,
+                registration_cost=?,
+                registration_pay_method=?,
+                purpose=?,
+                benefit_college=?,
+                employee_signature=?,
+                edf_submitted=?
+                WHERE vid=?
+                ''',
+                (data[0],data[1],
+                 data[2],data[3],
+                 data[4],
+                 data[5],
+                 data[6],data[7],
+                 data[8],data[9],
+                 data[10],data[11],
+                 data[12],data[13],
+                 data[14],data[15],
+                 data[16],data[17],
+                 data[18],data[19],
+                 data[20],data[21],
+                 data[22],data[23],
+                 save_submit,data[28],))
+    
+    database.commit()
+    logger.info(f'EDF {str(data[28])} has been updated.')
     return
 
 def createEDF(data):
@@ -245,8 +301,6 @@ def createEDF(data):
                 department,
                 position,
                 edf_start,
-                budget_index,
-                account_id,
                 course_name,
                 course_number,
                 credit_hours,
@@ -267,6 +321,8 @@ def createEDF(data):
                 benefit_college,
                 employee_signature,
                 admin_signature,
+                budget_index,
+                account_id,
                 edf_submitted,
                 edf_id
                 )
@@ -280,8 +336,7 @@ def createEDF(data):
                 ''',
                 (data[0],data[1],
                  data[2],data[3],
-                 data[4],bdgt_index,
-                 account,data[5],
+                 data[4],data[5],
                  data[6],data[7],
                  data[8],data[9],
                  data[10],data[11],
@@ -292,6 +347,8 @@ def createEDF(data):
                  data[20],data[21],
                  data[22],data[23],
                  admin_signature,
+                 bdgt_index,
+                 account,
                  save_submit,
                  edf_id,))
     
@@ -365,6 +422,7 @@ def edfMenu():
 
     result = autoComplete(session['user'])
     session['edflist'] = showEDFList(result[0][0])
+    session['update'] = False
 
     # From menu page switch to edit or
     # create a blank EDF form
@@ -374,7 +432,14 @@ def edfMenu():
         elif request.form.get("editButton") == "editEDF":
             # Get form information based on
             # EDF ID
-            session['edfdata'] = getEDF(request.form.get("edfForms"))
+            session['update'] = True
+            x = 0
+            edfList = getEDF(request.form.get("edfForms"))
+            for item in edfList[0]:
+                print(item)
+                session['edfdata'][x] = item
+                x += 1
+                
             return redirect(url_for("filledFormPartOne"))
     
     
@@ -482,14 +547,6 @@ def filledFormPartOne():
     # route function.
     session.modified = True
 
-    result = autoComplete(session['user'])
-    session['edfdata'][0] = result[0][1]
-    session['edfdata'][1] = result[0][0]
-
-
-    # TODO - Get edf data to auto complete form information
-    # session['edfkey']
-
 
     # TODO - How to select radio button
     # based on what the user has
@@ -517,6 +574,7 @@ def filledFormPartOne():
         # TODO - call filledformpart2
         if (qualityCheck(session['edfdata'])):
             logger.info(f'Data quality check success.')
+            session['update'] = True
             return redirect(url_for("formPartTwo"))
         else:
             logger.info(f'Data quality check failed.')
@@ -564,16 +622,22 @@ def formPartTwo():
             session['edfdata'][x] = val
             x += 1
 
-        y = 0
-        for x in session['edfdata']:
-            print(f'[{y}]: {x}')
-            y += 1
+        #y = 0
+        #for x in session['edfdata']:
+        #    print(f'[{y}]: {x}')
+        #    y += 1
 
         if (qualityCheck(session['edfdata'])):
             logger.info(f'Data quality check success.')
 
             # Enter data into the database
-            createEDF(session['edfdata'])
+            if (session['update'] == False):
+                createEDF(session['edfdata'])
+            else:
+                # If user is editing an EDF form
+                # only perform an update
+                updateEDF(session['edfdata'])
+                session['update'] = False
             
             return redirect(url_for("formPartTwo"))
         else:
