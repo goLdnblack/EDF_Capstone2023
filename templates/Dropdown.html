@@ -12,13 +12,12 @@
         <div class="dropdown">
             <label for="edfForms">Select EDF Form:</label>
             <select class="menuform" id="edfForms" name="edfForms">
-                <option value="form1">EDF Form 1</option>
-                <option value="form2">EDF Form 2</option>
-                <option value="form3">EDF Form 3</option>
-                <!-- Add more options as needed -->
+                {% for row in session['edflist'] %}
+                    <option value="{{session['edflist'][2]}}">EDF ID: {{row[2]}} Date: {{row[1]}}</option>
+                {% endfor %}
             </select>
         </div>
-        <button class="crtbtn" id="createButton">Create EDF Form</button>
+        <button type="submit" class="crtbtn" id="createButton" value="newEDF">Create EDF Form</button>
         <button id="editButton">Edit EDF Form</button>
     </div>
 

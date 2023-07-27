@@ -161,8 +161,18 @@ def qualityCheck(data):
 # TODO - When someone else is looking for an existing EDF
 # to approve, this method searches for it. Could find either
 # by EDF ID or professor
-def getEDF():
-    return
+def getEDF(vid):
+    sql = connectDB()
+
+    sql.execute('''
+                SELECT vid, edf_start, edf_id,
+                edf_submitted,admin_signature FROM EDF
+                WHERE vid in (?)
+                ''', (vid,))
+    
+    result = sql.fetchall()
+    
+    return result
 
 # TODO - Update current EDF
 def updateEDF():
@@ -316,8 +326,8 @@ def login():
             session['edfdata'] = [""] * 29
             
             # Load EDF list
-            #return redirect(url_for("edfMenu"))
-            return redirect(url_for("formPartOne"))
+            return redirect(url_for("edfMenu"))
+            #return redirect(url_for("formPartOne"))
         else:
             flash('\nIncorrect username/password.')
             return redirect(url_for("login"))
@@ -327,12 +337,26 @@ def login():
 # TODO - User select or create new EDF
 @app.route("/EDF_Menu", methods=["POST", "GET"])
 def edfMenu():
+    session.modified = True
+
+    result = autoComplete(session['user'])
+    session['edflist'] = getEDF(result[0][0])
+
+    if request.method == "POST":
+        if request.form.get("createButton") == "newEDF":
+            return redirect(url_for("formPartOne"))
+    
+    
+    # Send edf key to filled form page
+    #session['edfkey']
 
     return render_template("Dropdown.html")
 
 # TODO - User registering to the EDF database
 @app.route("/Register", methods=["POST", "GET"])
 def register():
+
+    
 
     return render_template("Register.html")
 
@@ -351,9 +375,6 @@ def register():
 # the formPartOne page loads, call it at the login
 # once to fill the session[] array with all the 
 # user values to avoid multiple SQL calls
-
-# TODO - check date forms, they are not currently
-# checking if the end date is after the start
 @app.route("/Form_Index", methods=["POST", "GET"])
 def formPartOne():
     logger.info(f'Loaded blank EDF form')
@@ -369,6 +390,12 @@ def formPartOne():
     result = autoComplete(session['user'])
     session['edfdata'][0] = result[0][1]
     session['edfdata'][1] = result[0][0]
+
+
+    # TODO - How to select radio button
+    # based on what the user has
+    # selected.
+    # https://stackoverflow.com/questions/43857816/select-a-radio-button-in-a-jinja2-template
 
     if request.method == "POST":
         # Quality check the data in the forms
@@ -403,6 +430,63 @@ def formPartOne():
         
         # TODO - fix by using {{session['edfdata']}}
         # in the html page instead of {{data}}
+        if (qualityCheck(session['edfdata'])):
+            logger.info(f'Data quality check success.')
+            return redirect(url_for("formPartTwo"))
+        else:
+            logger.info(f'Data quality check failed.')
+            # TODO - make flash be part of a group
+            # that only shows up in the form page
+            flash('Check data entered in form.')
+            return redirect(url_for("formPartOne"))
+
+    # Data array is used to display information
+    # from python program to HTML page.
+    return render_template("index.html")
+
+
+
+@app.route("/Filled_Form", methods=["POST", "GET"])
+def filledFormPartOne():
+    # This line allows the session to be modified
+    # and used on a different route method.
+    # Not sure if it needs to be set on every
+    # route function.
+    session.modified = True
+
+    result = autoComplete(session['user'])
+    session['edfdata'][0] = result[0][1]
+    session['edfdata'][1] = result[0][0]
+
+
+    # TODO - Get edf data to auto complete form information
+    # session['edfkey']
+
+
+    # TODO - How to select radio button
+    # based on what the user has
+    # selected.
+    # https://stackoverflow.com/questions/43857816/select-a-radio-button-in-a-jinja2-template
+
+    if request.method == "POST":
+        # Quality check the data in the forms
+        # before entering into database
+
+        x = 0
+        # EDF data is stored in the array in the order
+        # they appear in the EDF form
+        for key, val in request.form.items():
+            #print(str(key), str(val))
+            #edf_data[x] = val
+
+            #session['edfdata'].append(val)
+            session['edfdata'][x] = val
+            x += 1
+
+        # TODO - using data variable may show
+        # the user data on the webpage url
+        
+        # TODO - call filledformpart2
         if (qualityCheck(session['edfdata'])):
             logger.info(f'Data quality check success.')
             return redirect(url_for("formPartTwo"))
