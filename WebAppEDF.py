@@ -345,6 +345,8 @@ def edfMenu():
     if request.method == "POST":
         if request.form.get("createButton") == "newEDF":
             return redirect(url_for("formPartOne"))
+        elif request.form.get("editButton") == "editEDF":
+            return redirect(url_for("filledFormPartOne"))
     
     
     # Send edf key to filled form page
