@@ -8,7 +8,7 @@ body {
     height: 100vh;
     background-color: #f0f0f0;
 }
-
+​
 .container {
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -17,42 +17,25 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center; /* Center all content within the container */
 }
-
+​
 .dropdown {
     margin-bottom: 10px; /* Add margin at the bottom of the dropdown */
 }
-
-p.warning {
-	font-size: 15px;
-	font-family: verdana;
-	border: none;
-	border-radius: 8px;
-	padding: 10px 15px;
-    position: absolute;
-	top: 0;
-}
-
-p span {
-	background-color: rgb(241, 241, 222);
-	border: thin;
-	padding: 12px 15px;
-	text-align: center;
-}
-
+​
 form {
     width: 300px; /* Set a fixed width for the form */
     margin: 0 auto; /* Center the form horizontally */
 }
-
+​
 h1 {
     margin-bottom: 20px;
 }
-
+​
 label {
     display: block;
     margin-bottom: 5px;
 }
-
+​
 input {
     width: 100%;
     max-width: 250px; /* Set a maximum width for the input boxes */
@@ -61,9 +44,15 @@ input {
     border: 1px solid #ccc;
     border-radius: 3px;
 }
-
+​
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px; /* Add some margin at the top */
+}
+​
 button {
-    width: 100%;
+    width: 48%; /* Set a width for the buttons */
     padding: 10px;
     background-color: #4CAF50;
     color: #fff;
@@ -71,49 +60,7 @@ button {
     border-radius: 3px;
     cursor: pointer;
 }
-.crtbtn {
-    margin-bottom: 20px;
-}
-
-.menuform {
-    margin-bottom: 20px;
-}
-
+​
 button:hover {
     background-color: #45a049;
-}
-
-​
-.button-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px; /* Add some margin at the top */
-}
-
-
-.menubar {
-    background-color: #45a049;
-    overflow: hidden;
-    position: absolute;
-	top: 0;
-    left: 0;
-}
-
-.menubar a {
-    float: left;
-    color:#ffffff;
-    text-align: center;
-    padding: 12px 15px;
-    text-decoration: none;
-    font-size: 18px;
-}
-
-.menubar a:hover {
-    background-color: #ddd;
-    color:gray;
-}
-
-.menubar a:active {
-    background-color: #45a049;
-    color: white;
 }

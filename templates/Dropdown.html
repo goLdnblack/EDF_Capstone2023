@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EDF Forms System</title>
+    <!--link rel="stylesheet" type="text/css" href="registrationStyle.css"-->
+    <link href="{{ url_for('static',filename='styles/css/registrationStyle.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='styles/img/favicon.ico') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>EDF Forms System</h1>
+        <div class="dropdown">
+            <label for="edfForms">Select EDF Form:</label>
+            <select class="menuform" id="edfForms" name="edfForms">
+                <option value="form1">EDF Form 1</option>
+                <option value="form2">EDF Form 2</option>
+                <option value="form3">EDF Form 3</option>
+                <!-- Add more options as needed -->
+            </select>
+        </div>
+        <button class="crtbtn" id="createButton">Create EDF Form</button>
+        <button id="editButton">Edit EDF Form</button>
+    </div>
+
+    <!--script src="script.js"></script-->
+</body>
+</html>

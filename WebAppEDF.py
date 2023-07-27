@@ -315,13 +315,19 @@ def login():
             
             session['edfdata'] = [None] * 29
             
-
-            return redirect(url_for("formPartOne"))
+            return redirect(url_for("edfMenu"))
+            #return redirect(url_for("formPartOne"))
         else:
             flash('\nIncorrect username/password.')
             return redirect(url_for("login"))
         
     return render_template("Login.html")
+
+# TODO - User select or create new EDF
+@app.route("/EDF_Menu", methods=["POST", "GET"])
+def edfMenu():
+
+    return render_template("Dropdown.html")
 
 # TODO - User registering to the EDF database
 @app.route("/Register", methods=["POST", "GET"])
