@@ -64,16 +64,27 @@ def edfIDGenerator():
 # TODO - Define role for user being registered
 def registerUser(vid, name, password):
     
+    # Capitalize VID 
+    vid = vid.upper()
+
     # Check if the user already registered
     # in the database
-    if (len(verifyUser(vid)) == 0):
-        logger.info(f'User already exists in the database.')
+    sql = connectDB()
+
+    sql.execute('''
+                SELECT UPPER(vid) FROM USERS
+                WHERE vid=?
+                ''', (vid,))
+    
+    result = sql.fetchall()
+
+    if (len(result) != 0):
+        logger.info('User already registed.')
+        flash('User already registered')
         return
 
     salt = hw.generateSalt()
     hashed_salt_password = hw.generatePasswordSalt(password, salt)
-
-    sql = connectDB()
 
     try:
         sql.execute('''
@@ -82,6 +93,7 @@ def registerUser(vid, name, password):
                     ''', (vid, name, hashed_salt_password, salt))
     except:
         logger.critical(f'Unable to enter {str(vid)} into the database.')
+        flash('Error registering user')
     else:
         database.commit()
         logger.info(f'Successfully registered {str(vid)} into EDF database.')
@@ -161,7 +173,7 @@ def qualityCheck(data):
 # TODO - When someone else is looking for an existing EDF
 # to approve, this method searches for it. Could find either
 # by EDF ID or professor
-def getEDF(vid):
+def showEDFList(vid):
     sql = connectDB()
 
     sql.execute('''
@@ -172,6 +184,18 @@ def getEDF(vid):
     
     result = sql.fetchall()
     
+    return result
+
+def getEDF(edf_id):
+    sql = connectDB()
+
+    sql.execute('''
+                SELECT * FROM EDF
+                WHERE edf_id in (?)
+                ''', (edf_id,))
+    
+    result = sql.fetchall()
+
     return result
 
 # TODO - Update current EDF
@@ -340,12 +364,17 @@ def edfMenu():
     session.modified = True
 
     result = autoComplete(session['user'])
-    session['edflist'] = getEDF(result[0][0])
+    session['edflist'] = showEDFList(result[0][0])
 
+    # From menu page switch to edit or
+    # create a blank EDF form
     if request.method == "POST":
         if request.form.get("createButton") == "newEDF":
             return redirect(url_for("formPartOne"))
         elif request.form.get("editButton") == "editEDF":
+            # Get form information based on
+            # EDF ID
+            session['edfdata'] = getEDF(request.form.get("edfForms"))
             return redirect(url_for("filledFormPartOne"))
     
     
@@ -358,18 +387,15 @@ def edfMenu():
 @app.route("/Register", methods=["POST", "GET"])
 def register():
 
-    
+    if request.method == "POST":
+        # Register new user
+        name = request.form['name']
+        vid = request.form['vid']
+        password = request.form['password']
+        # Function checks if user already exists
+        registerUser(vid, name, password)
 
     return render_template("Register.html")
-
-# TODO - Instead of going straight to the EDF page
-# the first page could show a list of current EDF's
-# in the database that are assigned to the specific
-# user. The user could select to edit an already
-# opened EDF, an admin could select an EDF
-# that is waiting for their approval or create
-# a brand new EDF which would go to the createEDF
-# page.
 
 # First page to enter information into EDF
 

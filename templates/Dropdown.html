@@ -8,18 +8,18 @@
 </head>
 <body>
     <div class="container">
-        <h1>EDF Forms System</h1>
-        <div class="dropdown">
-            <label for="edfForms">Select EDF Form:</label>
-            <select class="menuform" id="edfForms" name="edfForms">
-                {% for row in session['edflist'] %}
-                    <option value="{{session['edflist'][2]}}">EDF ID: {{row[2]}} Date: {{row[1]}}</option>
-                {% endfor %}
-            </select>
-        </div>
         <form action="#" method="post">
+            <h1>EDF Forms System</h1>
+            <div class="dropdown">
+                <label for="edfForms">Select EDF Form:</label>
+                <select class="menuform" id="edfForms" name="edfForms">
+                    {% for row in session['edflist'] %}
+                        <option value="{{row[2]}}">EDF ID: {{row[2]}} Date: {{row[1]}}</option>
+                    {% endfor %}
+                </select>
+            </div>
             <button class="crtbtn" id="createButton" name="createButton" value="newEDF">Create EDF Form</button>
-            <button id="editButton" name="editButton" value="editDF">Edit EDF Form</button>
+            <button id="editButton" name="editButton" value="editEDF">Edit EDF Form</button>
         </form>
     </div>
 

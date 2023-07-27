@@ -12,9 +12,19 @@
         <a class="active" href="/">EDF Log In</a>
     </div> 
 
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <p class="warning_register"><span>{{ message }}</span></p>
+            <br><br><br>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <br>
     <div class="container">
         <h1>Registration</h1>
-        <form id="registrationForm">
+        <form id="registrationForm" action="#" method="post">
             <!--<label for="name">Name:</label>-->
             <input type="text" id="name" name="name" placeholder="Name" required>
 
