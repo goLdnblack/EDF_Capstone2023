@@ -27,6 +27,16 @@
   <a href="EDF_Menu">EDF Menu</a>
 </div> 
 
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    {% for message in messages %}
+    <p class="warning_index"><span>{{ message }}</span></p>
+    <br><br><br>
+    {% endfor %}
+{% endif %}
+{% endwith %}
+
 <h2>REQUEST FOR EMPLOYEE DEVELOPMENT FUNDS - PART 2</h2>
 <div class="form-container">
 <form action="#" method="post">

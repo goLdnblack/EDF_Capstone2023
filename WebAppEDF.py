@@ -133,8 +133,12 @@ def qualityCheck(data):
     # course end cannot be before start
 
     datediff = 0
-
-    #for x in range(len(data)):
+        
+    # Date field would be "" if 
+    # the first page is bypassed
+    if (data[4] == ""):
+        return False
+    
     fulltime_start = datetime.strptime(data[4], "%Y-%m-%d")
 
     # The hire date shouldn't be older than at least set amount
@@ -148,6 +152,12 @@ def qualityCheck(data):
         
     # Check course dates
     #print(f'{data[9]}\n{data[10]}\n{data[11]}')
+    
+    # Date field would be "" if 
+    # the first page is bypassed
+    if (data[10] == ""):
+        return False
+    
     course_start = datetime.strptime(data[10], "%Y-%m-%d")
     course_end = datetime.strptime(data[11], "%Y-%m-%d")
 
@@ -434,6 +444,10 @@ def edfMenu():
             session['update'] = True
             x = 0
             edfList = getEDF(request.form.get("edfForms"))
+
+            if (len(edfList) == 0):
+                return redirect(url_for('edfMenu'))
+
             for item in edfList[0]:
                 #print(item)
                 session['edfdata'][x] = item
