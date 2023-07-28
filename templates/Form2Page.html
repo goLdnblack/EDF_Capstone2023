@@ -24,6 +24,7 @@
 
 <div class="menubar">
   <a class="active" href="/">Log Off</a>
+  <a href="EDF_Menu">EDF Menu</a>
 </div> 
 
 <h2>REQUEST FOR EMPLOYEE DEVELOPMENT FUNDS - PART 2</h2>
@@ -63,16 +64,16 @@
 
   <label for="registrationPayment">How will the registration be paid?</label><br>
 
-  <input type="radio" id="registrationPaymentOptionA" name="registrationPayment" value="P-Card" required>
+  <input type="radio" id="registrationPaymentOptionA" name="registrationPayment" value="P-Card" required {{registrationPay[0]}}>
   <label for="registrationPaymentOptionA">P-Card</label><br>
 
-  <input type="radio" id="registrationPaymentOptionB" name="registrationPayment" value="Check Request" required>
+  <input type="radio" id="registrationPaymentOptionB" name="registrationPayment" value="Check Request" required {{registrationPay[1]}}>
   <label for="registrationPaymentOptionB">Check Request</label><br>
 
-  <input type="radio" id="registrationPaymentOptionC" name="registrationPayment" value="Journal Entry" required>
+  <input type="radio" id="registrationPaymentOptionC" name="registrationPayment" value="Journal Entry" required {{registrationPay[2]}}>
   <label for="registrationPaymentOptionC">Journal Entry <b>(only for internal conferences hosted by Valencia College)</b></label><br>
 
-  <input type="radio" id="registrationPaymentOptionD" name="registrationPayment" value="Journal Entry" required>
+  <input type="radio" id="registrationPaymentOptionD" name="registrationPayment" value="Traveler to Pay" required {{registrationPay[3]}}>
   <label for="registrationPaymentOptionD">Traveler to Pay <b>(employee will be reimbursed on per diem after the conference.)</b></label><br><br>
 
 

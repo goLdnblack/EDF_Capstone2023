@@ -95,6 +95,7 @@ def registerUser(vid, name, password):
         logger.critical(f'Unable to enter {str(vid)} into the database.')
         flash('Error registering user')
     else:
+        flash('User successfully registered')
         database.commit()
         logger.info(f'Successfully registered {str(vid)} into EDF database.')
 
@@ -165,11 +166,6 @@ def qualityCheck(data):
         if (conf_end < conf_start):
             logger.info(f'Conference end date happens before the start date.')
             return False
-            
-
-    # TODO - [13] could be designed
-    # with a drop down menu to allow
-    # for different types of degrees
 
     return True
 
@@ -424,6 +420,9 @@ def edfMenu():
     session['edflist'] = showEDFList(result[0][0])
     session['update'] = False
 
+    # Reset edf data
+    session['edfdata'] = [""] * 29
+
     # From menu page switch to edit or
     # create a blank EDF form
     if request.method == "POST":
@@ -436,11 +435,12 @@ def edfMenu():
             x = 0
             edfList = getEDF(request.form.get("edfForms"))
             for item in edfList[0]:
-                print(item)
+                #print(item)
                 session['edfdata'][x] = item
                 x += 1
                 
-            return redirect(url_for("filledFormPartOne"))
+            return redirect(url_for("formPartOne"))
+            #return redirect(url_for("filledFormPartOne"))
     
     
     # Send edf key to filled form page
@@ -490,6 +490,28 @@ def formPartOne():
     # selected.
     # https://stackoverflow.com/questions/43857816/select-a-radio-button-in-a-jinja2-template
 
+    # Pre select radio button
+    degreeType = [''] * 5
+    checked = session['edfdata'][12]
+    if checked == 'No':
+        degreeType[0] = 'checked'
+    elif checked == 'Doctorate':
+        degreeType[1] = 'checked'
+    elif checked == 'Master':
+        degreeType[2] = 'checked'
+    elif checked == 'Bachelor':
+        degreeType[3] = 'checked'
+    elif checked == 'Associate':
+        degreeType[4] = 'checked'
+
+    # Pre select tuition
+    tuitionType = [''] * 2
+    checked = session['edfdata'][13]
+    if checked == 'A':
+        tuitionType[0] = 'checked'
+    elif checked == 'B':
+        tuitionType[1] = 'checked'
+
     if request.method == "POST":
         # Quality check the data in the forms
         # before entering into database
@@ -535,7 +557,7 @@ def formPartOne():
 
     # Data array is used to display information
     # from python program to HTML page.
-    return render_template("index.html")
+    return render_template("index.html", degreeType=degreeType, tuitionType=tuitionType)
 
 
 
@@ -552,6 +574,22 @@ def filledFormPartOne():
     # based on what the user has
     # selected.
     # https://stackoverflow.com/questions/43857816/select-a-radio-button-in-a-jinja2-template
+    
+    # Pre select radio button
+    array = [''] * 5
+    checked = session['edfdata'][12]
+    if checked == 'No':
+        array[0] = 'checked'
+    elif checked == 'Doctorate':
+        array[1] = 'checked'
+    elif checked == 'Master':
+        array[2] = 'checked'
+    elif checked == 'Bachelor':
+        array[3] = 'checked'
+    elif checked == 'Associate':
+        array[4] = 'checked'
+
+    
 
     if request.method == "POST":
         # Quality check the data in the forms
@@ -585,12 +623,11 @@ def filledFormPartOne():
 
     # Data array is used to display information
     # from python program to HTML page.
-    return render_template("index.html")
+    return render_template("index.html", array=array)
 
 # Information page on how to navigate site
 @app.route("/Instructions", methods=["POST", "GET"])
 def instructPage():
-    logger.info(f'Switched to instruct page')
     
     return render_template("Instructions.html")
 
@@ -605,6 +642,19 @@ def formPartTwo():
     # the first form
     if (len(locallist) < 1):
         return redirect(url_for("formPartOne"))
+    
+
+        # Pre select radio button
+    registrationPay = [''] * 4
+    checked = session['edfdata'][20]
+    if checked == 'P-Card':
+        registrationPay[0] = 'checked'
+    elif checked == 'Check Request':
+        registrationPay[1] = 'checked'
+    elif checked == 'Journal Entry':
+        registrationPay[2] = 'checked'
+    elif checked == 'Traveler to Pay':
+        registrationPay[3] = 'checked'
 
     if request.method == "POST":
 
@@ -639,7 +689,7 @@ def formPartTwo():
                 updateEDF(session['edfdata'])
                 session['update'] = False
             
-            return redirect(url_for("formPartTwo"))
+            return redirect(url_for("edfMenu"))
         else:
             logger.info(f'Data quality check failed.')
             # TODO - make flash be part of a group
@@ -647,7 +697,7 @@ def formPartTwo():
             flash('Check data entered in form.')
             return redirect(url_for("formPartTwo"))
 
-    return render_template("Form2Page.html")
+    return render_template("Form2Page.html", registrationPay=registrationPay)
 
 ###########################
 # END OF HTML CODE

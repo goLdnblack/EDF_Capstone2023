@@ -42,6 +42,7 @@
 {% endwith %}
 <div class="menubar">
   <a class="active" href="/">Log Off</a>
+  <a href="EDF_Menu">EDF Menu</a>
 </div> 
 
 <h2>REQUEST FOR EMPLOYEE DEVELOPMENT FUNDS - PART 1</h2>
@@ -108,26 +109,18 @@
     <label for="courseEndDate">Course End Date:</label>
     <input type="date" id="courseEndDate" name="courseEndDate" value="{{session['edfdata'][11]}}" required> </div><br>
 
-
-    <label for="degreeCheckbox">Is this course part of a degree program?</label><br>
-      <input type="radio" id="yesCheckbox" name="degreeType" value="Yes" onclick="toggleDegreeOptions(true)" required>
-      <label for="yesCheckbox">Yes</label>
-
-    <div class="radio-container">
-      <input type="radio" id="noCheckbox" name="degreeType" value="No" onclick="toggleDegreeOptions(false)">
-      <label for="noCheckbox">No</label>
-    </div>
-
-    <br><div id="degreeOptions" style="display: none;">
-    <p><b>if yes, check the degree type that applies.</b></p>
-    <input type="radio" id="doctorateCheckbox" name="degreeType" value="Doctorate">
+    <br><div id="degreeOptions" style="display: block;">
+    <p><b>Check the degree type that applies.</b></p>
+    <input type="radio" id="doctorateCheckbox" name="degreeType" value="Doctorate" {{degreeType[1]}}>
     <label for="doctorateCheckbox">Doctorate</label>
-    <input type="radio" id="masterCheckbox" name="degreeType" value="Master">
+    <input type="radio" id="masterCheckbox" name="degreeType" value="Master" {{degreeType[2]}}>
     <label for="masterCheckbox">Master</label>
-    <input type="radio" id="bachelorCheckbox" name="degreeType" value="Bachelor">
+    <input type="radio" id="bachelorCheckbox" name="degreeType" value="Bachelor" {{degreeType[3]}}>
     <label for="bachelorCheckbox">Bachelor</label>
-    <input type="radio" id="associateCheckbox" name="degreeType" value="Associate">
+    <input type="radio" id="associateCheckbox" name="degreeType" value="Associate" {{degreeType[4]}}>
     <label for="associateCheckbox">Associate</label>
+    <input type="radio" id="noCheckbox" name="degreeType" value="No" {{degreeType[0]}}>
+    <label for="noCheckbox">None</label>
     
     </div><br>
 
@@ -149,11 +142,11 @@
       Funds are limited to $1,100 per fiscal year.)</b></p><br>
 
       <label for="tuitionPayment">How will tuition be paid for?</label><br>
-    <input type="radio" id="paymentOptionA" name="tuitionPayment" value="A" required>
+    <input type="radio" id="paymentOptionA" name="tuitionPayment" value="A" required {{tuitionType[0]}}>
 
     <div class="radio-container">
     <label for="paymentOptionA">Valencia pays institution directly</label>
-    <input type="radio" id="paymentOptionB" name="tuitionPayment" value="B" required>
+    <input type="radio" id="paymentOptionB" name="tuitionPayment" value="B" required {{tuitionType[1]}}>
       <label for="paymentOptionB">Valencia reimburses employee for out of pocket tuition cost</label></div><br><br>
 
     <p>If you selected <b>“Valencia pays institution directly,”</b> submit a check request form along with this application. Payee will be your institution. Include printout of your tuition invoice and class schedule. If you selected <b>“Valencia reimburses employee for out-of-pocket cost,”</b> please submit a
