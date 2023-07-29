@@ -216,6 +216,7 @@ def updateEDF(data):
     # the function when the user is ready to
     # submit the EDF officially
     save_submit = 1
+    print(data[7])
     sql.execute('''
                 UPDATE EDF
                 SET name=?,
@@ -243,7 +244,7 @@ def updateEDF(data):
                 benefit_college=?,
                 employee_signature=?,
                 edf_submitted=?
-                WHERE vid=?
+                WHERE edf_id=?
                 ''',
                 (data[0],data[1],
                  data[2],data[3],
