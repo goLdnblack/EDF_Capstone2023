@@ -216,7 +216,6 @@ def updateEDF(data):
     # the function when the user is ready to
     # submit the EDF officially
     save_submit = 1
-    print(data[7])
     sql.execute('''
                 UPDATE EDF
                 SET name=?,
